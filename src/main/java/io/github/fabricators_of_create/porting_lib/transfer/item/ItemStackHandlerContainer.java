@@ -1,12 +1,12 @@
 package io.github.fabricators_of_create.porting_lib.transfer.item;
 
-import it.unimi.dsi.fastutil.ints.IntIterator;
-import it.unimi.dsi.fastutil.ints.IntSortedSet;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
@@ -34,10 +34,11 @@ public class ItemStackHandlerContainer extends ItemStackHandler implements Conta
 
 	@Override
 	public boolean isEmpty() {
-		return nonEmptyViews.isEmpty();
+		return nonEmptySlots.isEmpty();
 	}
 
 	@Override
+	@NotNull
 	public ItemStack getItem(int slot) {
 		if (indexInvalid(slot))
 			return ItemStack.EMPTY;
@@ -45,24 +46,24 @@ public class ItemStackHandlerContainer extends ItemStackHandler implements Conta
 	}
 
 	@Override
+	@NotNull
 	public ItemStack removeItem(int slot, int amount) {
 		if (indexInvalid(slot))
 			return ItemStack.EMPTY;
-		ItemStack stack = getStackInSlot(slot);
-		return stack.split(amount);
+		ItemStack stack = getStackInSlot(slot).copy();
+		ItemStack removed = stack.split(amount);
+		setStackInSlot(slot, stack);
+		return removed;
 	}
 
 	@Override
+	@NotNull
 	public ItemStack removeItemNoUpdate(int slot) {
-		if (indexInvalid(slot))
-			return ItemStack.EMPTY;
-		ItemStack stack = getStackInSlot(slot);
-		setStackInSlot(slot, ItemStack.EMPTY);
-		return stack;
+		return removeItem(slot, Integer.MAX_VALUE);
 	}
 
 	@Override
-	public void setItem(int slot, ItemStack stack) {
+	public void setItem(int slot, @NotNull ItemStack stack) {
 		if (indexInvalid(slot))
 			return;
 		setStackInSlot(slot, stack);
@@ -73,33 +74,30 @@ public class ItemStackHandlerContainer extends ItemStackHandler implements Conta
 	}
 
 	@Override
-	public boolean stillValid(Player player) {
+	public boolean stillValid(@NotNull Player player) {
 		return false;
 	}
 
 	@Override
-	public boolean canPlaceItem(int index, ItemStack stack) {
+	public boolean canPlaceItem(int index, @NotNull ItemStack stack) {
 		if (indexInvalid(index))
 			return false;
 		return isItemValid(index, ItemVariant.of(stack));
 	}
 
 	@Override
-	public int countItem(Item item) {
+	public int countItem(@NotNull Item item) {
 		int total = 0;
-		IntSortedSet indices = getIndices(item);
-		for (IntIterator itr = indices.intIterator(); itr.hasNext();) {
-			int i = itr.nextInt();
-			ItemStack stack = getStackInSlot(i);
-			total += stack.getCount();
+		for (ItemStackHandlerSlot slot : lookup.get(item)) {
+			total += slot.stack.getCount();
 		}
 		return total;
 	}
 
 	@Override
-	public boolean hasAnyOf(Set<Item> set) {
+	public boolean hasAnyOf(@NotNull Set<Item> set) {
 		for (Item item : set) {
-			if (!getIndices(item).isEmpty())
+			if (!lookup.get(item).isEmpty())
 				return true;
 		}
 		return false;

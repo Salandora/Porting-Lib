@@ -42,7 +42,6 @@ public class SlotItemHandler extends Slot {
 
 	@Override
 	public void onQuickCraft(@NotNull ItemStack oldStackIn, @NotNull ItemStack newStackIn) {
-
 	}
 
 	@Override
@@ -56,7 +55,7 @@ public class SlotItemHandler extends Slot {
 	}
 
 	@Override
-	public boolean mayPickup(Player playerIn) {
+	public boolean mayPickup(@NotNull Player playerIn) {
 		return !itemHandler.getStackInSlot(index).isEmpty();
 	}
 
