@@ -47,15 +47,21 @@ public class ItemStackHandlerSlot extends SnapshotParticipant<Snapshot> implemen
 
 	@Override
 	protected void onFinalCommit() {
+		markChanged();
+	}
+
+	/**
+	 * Notify this slot's handler that this slot has been changed.
+	 */
+	public void markChanged() {
 		handler.onContentsChanged(this);
 	}
 
+	/**
+	 * @return the stack currently stored in this slot
+	 */
 	public ItemStack getStack() {
 		return stack;
-	}
-
-	public ItemVariant getVariant() {
-		return variant;
 	}
 
 	@Override
