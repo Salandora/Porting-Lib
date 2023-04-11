@@ -224,7 +224,7 @@ public class ItemStackHandler implements ExtendedStorage<ItemVariant>, INBTSeria
 
 	@Override
 	public Iterator<? extends StorageView<ItemVariant>> nonEmptyViews() {
-		return nonEmptySlots.iterator();
+		return List.copyOf(nonEmptySlots).iterator();
 	}
 
 	// NBT
