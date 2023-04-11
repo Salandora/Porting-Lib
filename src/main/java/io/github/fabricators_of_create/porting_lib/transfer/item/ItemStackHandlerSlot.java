@@ -135,6 +135,11 @@ public class ItemStackHandlerSlot extends SnapshotParticipant<Snapshot> implemen
 		setContent(snapshot.stack, snapshot.variant);
 	}
 
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "[index=" + index + ", stack=" + stack + ']';
+	}
+
 	protected record Snapshot(ItemStack stack, ItemVariant variant) {
 	}
 }

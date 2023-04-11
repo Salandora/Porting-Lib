@@ -97,9 +97,10 @@ public class ItemStackHandler implements ExtendedStorage<ItemVariant>, INBTSeria
 	/**
 	 * Immediately set the stack in the given slot.
 	 */
-	public void setStackInSlot(int slot, ItemStack stack) {
-		getSlot(slot).setStack(stack);
-		onContentsChanged(slot);
+	public void setStackInSlot(int index, ItemStack stack) {
+		ItemStackHandlerSlot slot = getSlot(index);
+		slot.setStack(stack);
+		slot.markChanged();
 	}
 
 	/**
