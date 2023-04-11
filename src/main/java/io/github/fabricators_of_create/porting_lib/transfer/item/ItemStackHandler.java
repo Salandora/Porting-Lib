@@ -190,7 +190,7 @@ public class ItemStackHandler implements ExtendedStorage<ItemVariant>, INBTSeria
 	@Override
 	public long extract(ItemVariant resource, long maxAmount, TransactionContext transaction) {
 		StoragePreconditions.notBlankNotNegative(resource, maxAmount);
-		Iterator<ItemStackHandlerSlot> iterator = lookup.get(resource.getItem()).iterator();
+		Iterator<ItemStackHandlerSlot> iterator = List.copyOf(lookup.get(resource.getItem())).iterator();
 		long extracted = 0;
 		while (extracted < maxAmount && iterator.hasNext()) {
 			ItemStackHandlerSlot slot = iterator.next();

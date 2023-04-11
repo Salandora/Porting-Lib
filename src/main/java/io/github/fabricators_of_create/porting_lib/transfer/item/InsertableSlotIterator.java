@@ -9,6 +9,7 @@ import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * An iterator for insertable slots of an {@link ItemStackHandler}. Given a handler and item,
@@ -22,8 +23,8 @@ public class InsertableSlotIterator extends AbstractIterator<ItemStackHandlerSlo
 	private ItemStackHandlerSlot nextEmptySlot;
 
 	public InsertableSlotIterator(ItemStackHandler handler, Item item) {
-		this.slots = handler.lookup.get(item).iterator();
-		this.emptySlots = handler.lookup.get(Items.AIR).iterator();
+		this.slots = List.copyOf(handler.lookup.get(item)).iterator();
+		this.emptySlots = List.copyOf(handler.lookup.get(Items.AIR)).iterator();
 	}
 
 	@Nullable
