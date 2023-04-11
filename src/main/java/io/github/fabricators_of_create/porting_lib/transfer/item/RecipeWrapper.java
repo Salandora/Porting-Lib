@@ -213,11 +213,6 @@ public class RecipeWrapper extends ItemStackHandler implements Container {
 	}
 
 	@Override
-	protected void onContentsChanged(ItemStackHandlerSlot slot) {
-		handler.onContentsChanged(slot);
-	}
-
-	@Override
 	public ItemStackHandlerSlot getSlot(int index) {
 		return handler.getSlot(index);
 	}
@@ -229,7 +224,6 @@ public class RecipeWrapper extends ItemStackHandler implements Container {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public void onContentsChanged(int slot) {
 		handler.onContentsChanged(slot);
 	}

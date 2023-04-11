@@ -149,15 +149,6 @@ public class ItemStackHandler implements ExtendedStorage<ItemVariant>, INBTSeria
 	 * Called when a slot's content is changed after a transaction is completed.
 	 * This is often called multiple times, once for each modified slot.
 	 */
-	protected void onContentsChanged(ItemStackHandlerSlot slot) {
-		onContentsChanged(slot.index);
-	}
-
-	/**
-	 * @deprecated use {@link ItemStackHandler#onContentsChanged(ItemStackHandlerSlot)}
-	 */
-	@Deprecated
-	@SuppressWarnings("DeprecatedIsStillUsed")
 	protected void onContentsChanged(int slot) {
 	}
 
@@ -188,7 +179,10 @@ public class ItemStackHandler implements ExtendedStorage<ItemVariant>, INBTSeria
 		long inserted = 0;
 		while (inserted < maxAmount && iterator.hasNext()) {
 			ItemStackHandlerSlot slot = iterator.next();
-			inserted += slot.insert(resource, maxAmount - inserted, transaction);
+			if (!isItemValid(slot.index, resource))
+				continue;
+			long max = Math.min(maxAmount - inserted, getStackLimit(slot.index, resource));
+			inserted += slot.insert(resource, max, transaction);
 		}
 		return inserted;
 	}

@@ -54,7 +54,7 @@ public class ItemStackHandlerSlot extends SnapshotParticipant<Snapshot> implemen
 	 * Notify this slot's handler that this slot has been changed.
 	 */
 	public void markChanged() {
-		handler.onContentsChanged(this);
+		handler.onContentsChanged(index);
 	}
 
 	/**
