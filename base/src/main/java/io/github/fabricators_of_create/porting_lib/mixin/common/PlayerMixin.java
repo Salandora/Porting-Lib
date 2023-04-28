@@ -2,6 +2,8 @@ package io.github.fabricators_of_create.porting_lib.mixin.common;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 
+import com.llamalad7.mixinextras.sugar.Local;
+
 import io.github.fabricators_of_create.porting_lib.common.util.MixinHelper;
 import io.github.fabricators_of_create.porting_lib.event.common.EntityInteractCallback;
 import io.github.fabricators_of_create.porting_lib.event.common.LivingEntityEvents;
@@ -23,6 +25,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -32,6 +36,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity {
@@ -77,12 +82,6 @@ public abstract class PlayerMixin extends LivingEntity {
 		if(LivingEntityEvents.ATTACK.invoker().onAttack(this, source, amount)) cir.setReturnValue(false);
 	}
 
-	@ModifyReturnValue(method = "createAttributes", at = @At("RETURN"))
-	private static AttributeSupplier.Builder registerKnockbackAttribute(AttributeSupplier.Builder builder) {
-		// re-adding is fine, since it uses a map
-		return builder.add(Attributes.ATTACK_KNOCKBACK);
-	}
-
 	@ModifyVariable(method = "hurt", at = @At("HEAD"), argsOnly = true)
 	private float port_lib$onHurt(float amount, DamageSource source, float amount2) {
 		return LivingEntityEvents.HURT.invoker().onHurt(source, this, amount);
@@ -100,4 +99,55 @@ public abstract class PlayerMixin extends LivingEntity {
 		InteractionResult cancelResult = PortingHooks.onInteractEntity(MixinHelper.cast(this), entity, hand);
 		if (cancelResult != null) cir.setReturnValue(cancelResult);
 	}
+
+
+	@ModifyReturnValue(method = "createAttributes", at = @At("RETURN"))
+	private static AttributeSupplier.Builder registerKnockbackAttribute(AttributeSupplier.Builder builder) {
+		// re-adding is fine, since it uses a map
+		return builder.add(Attributes.ATTACK_KNOCKBACK);
+	}
+
+	@ModifyArg(
+			method = "attack",
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraft/world/entity/LivingEntity;knockback(DDD)V",
+					ordinal = 0
+			),
+			index = 0
+	)
+	private double useKnockbackAttributeForKnockback(double strength) {
+		double addedStrength = getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+		if (addedStrength == 0)
+			return strength;
+		// strength = i * 0.5
+		double original = strength * 2;
+		return (original + addedStrength) / 2;
+	}
+
+	@ModifyArgs(
+			method = "attack",
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraft/world/entity/Entity;push(DDD)V"
+			)
+	)
+	private void useKnockbackAttributeForPush(Args args,
+											  @Local(ordinal = 0) int strength) { // int i, knockback strength
+		// need to recalculate deltas with modified strength
+		double addedStrength = getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+		if (addedStrength == 0)
+			return;
+		strength += addedStrength;
+
+		// x = -Mth.sin(this.getYRot() * (float) (Math.PI / 180.0)) * (float)i * 0.5F
+		double newX = -Math.sin(this.getYRot() * (Math.PI / 180.0)) * strength * 0.5;
+		args.set(0, newX);
+
+		// z = Mth.cos(this.getYRot() * (float) (Math.PI / 180.0)) * (float)i * 0.5F
+		double newZ = Math.cos(this.getYRot() * (Math.PI / 180.0)) * strength * 0.5;
+		args.set(2, newZ);
+	}
+
+
 }
