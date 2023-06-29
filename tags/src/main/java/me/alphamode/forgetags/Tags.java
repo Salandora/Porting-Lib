@@ -8,11 +8,11 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBlockTags;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EntityType;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
@@ -413,23 +413,23 @@ public class Tags implements ModInitializer {
 		/**
 		 * A tag containing all existing swords.
 		 */
-		public static final TagKey<Item> TOOLS_SWORDS = ConventionalItemTags.SWORDS;
+		public static final TagKey<Item> TOOLS_SWORDS = ItemTags.SWORDS;
 		/**
 		 * A tag containing all existing axes.
 		 */
-		public static final TagKey<Item> TOOLS_AXES = ConventionalItemTags.AXES;
+		public static final TagKey<Item> TOOLS_AXES = ItemTags.AXES;
 		/**
 		 * A tag containing all existing pickaxes.
 		 */
-		public static final TagKey<Item> TOOLS_PICKAXES = ConventionalItemTags.PICKAXES;
+		public static final TagKey<Item> TOOLS_PICKAXES = ItemTags.PICKAXES;
 		/**
 		 * A tag containing all existing shovels.
 		 */
-		public static final TagKey<Item> TOOLS_SHOVELS = ConventionalItemTags.SHOVELS;
+		public static final TagKey<Item> TOOLS_SHOVELS = ItemTags.SHOVELS;
 		/**
 		 * A tag containing all existing hoes.
 		 */
-		public static final TagKey<Item> TOOLS_HOES = ConventionalItemTags.HOES;
+		public static final TagKey<Item> TOOLS_HOES = ItemTags.HOES;
 		/**
 		 * A tag containing all existing shields.
 		 */
