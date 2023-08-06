@@ -1,6 +1,7 @@
 package io.github.fabricators_of_create.porting_lib_build;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import com.google.gson.JsonParser;
@@ -10,6 +11,7 @@ import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.impldep.bsh.commands.dir;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
@@ -62,7 +64,7 @@ public class DeduplicateInclusionsTask extends DefaultTask {
 				if (!hasJijs || !hasFmj)
 					return;
 
-				JsonObject json = JsonParser.parseString(Files.readString(fmj)).getAsJsonObject();
+				JsonObject json = JsonParser.parseString(Files.readString(fmj, StandardCharsets.UTF_8)).getAsJsonObject();
 				json.remove("jars");
 				Files.writeString(fmj, PortingLibBuildPlugin.GSON.toJson(json));
 
@@ -98,7 +100,7 @@ public class DeduplicateInclusionsTask extends DefaultTask {
 				Path jars = root.resolve("META-INF").resolve("jars");
 				Files.createDirectories(jars);
 
-				JsonObject json = JsonParser.parseString(Files.readString(fmj)).getAsJsonObject();
+				JsonObject json = JsonParser.parseString(Files.readString(fmj, StandardCharsets.UTF_8)).getAsJsonObject();
 				JsonArray jarsJson = new JsonArray();
 
 				try (Stream<Path> files = Files.list(dir)) {
@@ -160,7 +162,7 @@ public class DeduplicateInclusionsTask extends DefaultTask {
 		});
 	}
 
-	public static void log(String data) {
-//		log(data);
+	public void log(String data) {
+		getLogger().info(data);
 	}
 }
