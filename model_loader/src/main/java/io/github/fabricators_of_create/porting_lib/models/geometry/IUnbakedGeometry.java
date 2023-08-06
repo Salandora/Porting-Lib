@@ -23,7 +23,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 public interface IUnbakedGeometry<T extends IUnbakedGeometry<T>>
 {
-	BakedModel bake(BlockModel context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation);
+	BakedModel bake(BlockModel context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation, boolean isGui3d);
 
 	/**
 	 * Resolve parents of nested {@link BlockModel}s which are later used in

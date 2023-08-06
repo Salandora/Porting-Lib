@@ -14,7 +14,4 @@ public interface BlockEntityExtensions {
 
 	default void onLoad() {
 	}
-
-	default void invalidateCaps() {
-	}
 }

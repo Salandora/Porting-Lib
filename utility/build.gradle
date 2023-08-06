@@ -1,5 +1,7 @@
 moduleDependencies(project, [
-		"constants"
+		"constants",
+		"extensions",
+		"tags"
 ])
 
 processResources {

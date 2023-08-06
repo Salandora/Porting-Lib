@@ -1,7 +1,7 @@
 package io.github.fabricators_of_create.porting_lib.common.mixin.common.tool;
 
 import io.github.fabricators_of_create.porting_lib.common.extensions.tool.ItemExtensions;
-import io.github.fabricators_of_create.porting_lib.common.util.ToolAction;
+import io.github.fabricators_of_create.porting_lib.util.ToolAction;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 

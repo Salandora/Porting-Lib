@@ -183,7 +183,6 @@
     "client.PostChainMixin",
     "client.RemotePlayerMixin",
     "client.RenderTargetMixin",
-    "client.ScreenMixin",
     "client.SkullBlockRendererMixin",
     "client.TextureAtlasMixin",
     "client.TextureManagerMixin"

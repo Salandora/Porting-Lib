@@ -1,5 +1,5 @@
 # Porting Lib
-### A collection of utilities for porting mods from Forge to Fabric.
+### A stripped down collection of utilities for porting mods from Forge to Fabric.
 
 ## Use
 Porting Lib is split into modules. All modules are available on this maven:
@@ -18,27 +18,14 @@ The latest patch can be found from GitHub Actions as the build number.
 |-----------------------|---------------------------------------------------------------------------------------|
 | `Porting-Lib`         | Fat jar including all modules                                                         |
 | `accessors`           | Accessor mixins aplenty                                                               |
-| `attributes`          | Additional Entity Attributes; step height, gravity, swim speed                        |
-| `asm`                 | Asm hacks                                                                             |
-| `base`                | Code that has not yet been split into modules                                         |
-| `client_events`       | Useful client-side events                                                             |
 | `common`              | Miscellaneous utilities for other modules                                             |
 | `constants`           | Internal constants used by Porting Lib                                                |
 | `data`                | Additional data generation providers                                                  |
-| `entity`              | Multipart entities, extra spawn data, removal listening                               |
 | `extensions`          | Extensions to vanilla classes for additional functionality                            |
-| `fake_players`        | A basic fake server player implementation that can be used to simulate player actions |
-| `ingredients`         | Additional ingredient types                                                           |
 | `lazy_registration`   | A implementation of forge's DeferredRegister system rewritten for fabric              |
-| `model_builders`      | Additional model builders for data generation                                         |
-| `model_generators`    | Forge model generators                                                                |
 | `model_loader`        | Base loader for custom model types                                                    |
-| `model_materials`     | Material data for use in rendering                                                    |
-| `models`              | Model implementations, ModelData, RenderTypes                                         |
 | `networking`          | A Forge-like packet system                                                            |
-| `obj_loader`          | Loading .obj models                                                                   |
-| `recipe-category-api` | Allows mods to add additional recipe book categories                                  |
-| `registries`          | Custom datapack registries and registry utils                                         |
+| `screen`              | Adds screen related stuff                                                             |
 | `tags`                | Forge tags                                                                            |
 | `transfer`            | Storage implementations, client-side lookup, FluidStack, assorted transfer utilities  |
 | `utility`             | Miscellaneous utilities that are too niche for other modules                          |

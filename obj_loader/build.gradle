@@ -1,7 +1,0 @@
-moduleDependencies(project, [
-		"model_loader"
-])
-
-processResources {
-	duplicatesStrategy = DuplicatesStrategy.WARN
-}

@@ -6,6 +6,8 @@ import java.util.function.Supplier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 
+import org.spongepowered.asm.mixin.MixinEnvironment;
+
 public class EnvExecutor {
 	public static void runWhenOn(EnvType env, Supplier<Runnable> toRun) {
 		if (FabricLoader.getInstance().getEnvironmentType() == env) {

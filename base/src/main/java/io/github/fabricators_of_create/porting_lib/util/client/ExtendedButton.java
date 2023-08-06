@@ -2,6 +2,7 @@ package io.github.fabricators_of_create.porting_lib.util.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import io.github.fabricators_of_create.porting_lib.client.GuiUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;

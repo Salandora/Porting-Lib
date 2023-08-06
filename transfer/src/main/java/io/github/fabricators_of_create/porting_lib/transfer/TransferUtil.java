@@ -7,27 +7,21 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import com.google.common.collect.Iterators;
-
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-
-import net.minecraft.world.item.Items;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.lookup.v1.block.BlockApiCache;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.PlayerInventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
+import net.fabricmc.fabric.api.transfer.v1.storage.TransferVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.ResourceAmount;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -37,6 +31,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -56,12 +51,13 @@ import net.minecraft.world.level.block.state.BlockState;
  * }</pre>
  */
 @SuppressWarnings("removal")
-public class TransferUtil implements ModInitializer {
+public class TransferUtil {
 	/**
 	 * @return Either an outer transaction or a nested one in the current open one
 	 */
 	public static Transaction getTransaction() {
 		if (Transaction.isOpen()) {
+			//noinspection deprecation
 			TransactionContext open = Transaction.getCurrentUnsafe();
 			if (open != null) {
 				return open.openNested();
@@ -133,29 +129,9 @@ public class TransferUtil implements ModInitializer {
 		}
 		if (level == null)
 			return null;
-		List<Storage<ItemVariant>> itemStorages = new ArrayList<>();
+
 		BlockState state = be == null ? level.getBlockState(pos) : be.getBlockState();
-		for (Direction direction : getDirections(side)) {
-			Storage<ItemVariant> fluidStorage = ItemStorage.SIDED.find(level, pos, state, be, direction);
-
-			if (fluidStorage != null) {
-				if (itemStorages.size() == 0) {
-					itemStorages.add(fluidStorage);
-					continue;
-				}
-
-				for (Storage<ItemVariant> storage : itemStorages) {
-					if (!Objects.equals(fluidStorage, storage)) {
-						itemStorages.add(fluidStorage);
-						break;
-					}
-				}
-			}
-		}
-
-		if (itemStorages.isEmpty()) return null;
-		if (itemStorages.size() == 1) return itemStorages.get(0);
-		return new CombinedStorage<>(itemStorages);
+		return ItemStorage.SIDED.find(level, pos, state, be, side);
 	}
 
 	// Fluid storage getting
@@ -221,29 +197,9 @@ public class TransferUtil implements ModInitializer {
 		}
 		if (level == null)
 			return null;
-		List<Storage<FluidVariant>> fluidStorages = new ArrayList<>();
+
 		BlockState state = be == null ? level.getBlockState(pos) : be.getBlockState();
-		for (Direction direction : getDirections(side)) {
-			Storage<FluidVariant> fluidStorage = FluidStorage.SIDED.find(level, pos, state, be, direction);
-
-			if (fluidStorage != null) {
-				if (fluidStorages.size() == 0) {
-					fluidStorages.add(fluidStorage);
-					continue;
-				}
-
-				for (Storage<FluidVariant> storage : fluidStorages) {
-					if (!Objects.equals(fluidStorage, storage)) {
-						fluidStorages.add(fluidStorage);
-						break;
-					}
-				}
-			}
-		}
-
-		if (fluidStorages.isEmpty()) return null;
-		if (fluidStorages.size() == 1) return fluidStorages.get(0);
-		return new CombinedStorage<>(fluidStorages);
+		return FluidStorage.SIDED.find(level, pos, state, be, side);
 	}
 
 	// misc utils below
@@ -266,15 +222,6 @@ public class TransferUtil implements ModInitializer {
 		} else {
 			throw new RuntimeException("Class must either be ItemVariant or FluidVariant!");
 		}
-	}
-
-	/**
-	 * Given a Direction, determine which Directions should be checked for storages.
-	 * @return the provided Direction if non-null, otherwise all Directions
-	 */
-	private static Direction[] getDirections(@Nullable Direction direction) {
-		if (direction == null) return Direction.values();
-		return new Direction[] { direction };
 	}
 
 	/**
@@ -316,8 +263,7 @@ public class TransferUtil implements ModInitializer {
 	public static <T> List<Long> capacities(Storage<T> storage, int cutoff) {
 		List<Long> capacities = new ArrayList<>();
 		try (Transaction t = getTransaction()) {
-			for (Iterator<StorageView<T>> it = storage.iterator(); it.hasNext(); ) {
-				StorageView<T> view = it.next();
+			for (StorageView<T> view : storage) {
 				capacities.add(view.getCapacity());
 				if (capacities.size() == cutoff)
 					break;
@@ -357,7 +303,7 @@ public class TransferUtil implements ModInitializer {
 	public static List<FluidStack> getFluids(Storage<FluidVariant> storage, int cutoff) {
 		List<FluidStack> stacks = new ArrayList<>();
 		try (Transaction t = getTransaction()) {
-			for (StorageView<FluidVariant> view : getNonEmpty(storage)) {
+			for (StorageView<FluidVariant> view : storage.nonEmptyViews()) {
 				stacks.add(new FluidStack(view));
 				if (stacks.size() == cutoff) {
 					break;
@@ -380,7 +326,7 @@ public class TransferUtil implements ModInitializer {
 	public static List<ItemStack> getItems(Storage<ItemVariant> storage, int cutoff) {
 		List<ItemStack> stacks = new ArrayList<>();
 		try (Transaction t = getTransaction()) {
-			for (StorageView<ItemVariant> view : getNonEmpty(storage)) {
+			for (StorageView<ItemVariant> view : storage.nonEmptyViews()) {
 				long contained = view.getAmount();
 				ItemVariant item = view.getResource();
 				int maxSize = item.getItem().getMaxStackSize();
@@ -407,29 +353,11 @@ public class TransferUtil implements ModInitializer {
 		}
 		boolean success = true;
 		try (Transaction t = getTransaction()) {
-			Iterator<? extends StorageView<T>> itr = getNonEmpty(storage).iterator();
-			StorageView<T> currentView = itr.hasNext() ? itr.next() : null;
-			int attempts = 0;
-			while (currentView != null) {
-				if (attempts > 3) { // it's probably infinite - skip
-					currentView = itr.hasNext() ? itr.next() : null;
-					attempts = 0;
-					continue;
-				}
-				long contained = currentView.getAmount();
-				if (contained == 0) {
-					currentView = itr.hasNext() ? itr.next() : null;
-					attempts = 0;
-					continue;
-				}
-				T variant = currentView.getResource();
-				long extracted = currentView.extract(variant, contained, t);
-				if (extracted == 0) {
+			for (StorageView<T> view : storage.nonEmptyViews()) {
+				long amount = view.getAmount();
+				long extracted = view.extract(view.getResource(), amount, t);
+				if (extracted < amount)
 					success = false;
-					attempts = 0;
-					currentView = itr.hasNext() ? itr.next() : null;
-				}
-				attempts++;
 			}
 			t.commit();
 		}
@@ -443,25 +371,9 @@ public class TransferUtil implements ModInitializer {
 	public static FluidStack extractAnyFluid(Storage<FluidVariant> storage, long maxAmount, Transaction tx) {
 		if (!storage.supportsExtraction())
 			return FluidStack.EMPTY;
-		if (storage instanceof ExtendedStorage<FluidVariant> extended) {
-			ResourceAmount<FluidVariant> extracted = extended.extractAny(maxAmount, tx);
-			return extracted == null ? FluidStack.EMPTY : new FluidStack(extracted);
-		}
-		FluidStack fluid = FluidStack.EMPTY;
-		for (StorageView<FluidVariant> view : getNonEmpty(storage)) {
-			FluidVariant var = view.getResource();
-			long amount = Math.min(maxAmount, view.getAmount());
-			long extracted = view.extract(var, amount, tx);
-			maxAmount -= extracted;
-			if (fluid.isEmpty()) {
-				fluid = new FluidStack(var, extracted);
-			} else if (fluid.canFill(var)) {
-				fluid.grow(extracted);
-			}
-			if (maxAmount == 0)
-				break;
-		}
-		return fluid;
+
+		ResourceAmount<FluidVariant> extracted = StorageUtil.extractAny(storage, maxAmount, tx);
+		return extracted == null ? FluidStack.EMPTY : new FluidStack(extracted);
 	}
 
 	/**
@@ -490,29 +402,10 @@ public class TransferUtil implements ModInitializer {
 	public static ItemStack extractAnyItem(Storage<ItemVariant> storage, long maxAmount, Transaction tx) {
 		if (!storage.supportsExtraction())
 			return ItemStack.EMPTY;
-		if (storage instanceof ExtendedStorage<ItemVariant> extended) {
-			int max = truncateLong(maxAmount);
-			ResourceAmount<ItemVariant> extracted = extended.extractAny(max, tx);
-			return extracted == null ? ItemStack.EMPTY : extracted.resource().toStack(truncateLong(extracted.amount()));
-		}
-		ItemStack stack = ItemStack.EMPTY;
-		for (Iterator<StorageView<ItemVariant>> it = storage.iterator(); it.hasNext(); ) {
-			StorageView<ItemVariant> view = it.next();
-			if (!view.isResourceBlank()) {
-				ItemVariant var = view.getResource();
-				long amount = Math.min(var.getItem().getMaxStackSize(), Math.min(maxAmount, view.getAmount()));
-				long extracted = view.extract(var, amount, tx);
-				maxAmount -= extracted;
-				if (stack.isEmpty()) {
-					stack = var.toStack((int) extracted);
-				} else if (var.matches(stack)) {
-					stack.grow((int) extracted);
-				}
-				if (maxAmount == 0)
-					break;
-			}
-		}
-		return stack;
+
+		int max = (int) Math.min(Integer.MAX_VALUE, maxAmount);
+		ResourceAmount<ItemVariant> extracted = StorageUtil.extractAny(storage, max, tx);
+		return extracted == null ? ItemStack.EMPTY : extracted.resource().toStack((int) extracted.amount());
 	}
 
 	/** @see TransferUtil#extractAnyFluid(Storage, long) */
@@ -603,7 +496,7 @@ public class TransferUtil implements ModInitializer {
 		List<ItemStack> stacks = new ArrayList<>();
 		if (!storage.supportsExtraction()) return stacks;
 		try (Transaction t = getTransaction()) {
-			Iterator<? extends StorageView<ItemVariant>> itr = getNonEmpty(storage).iterator();
+			Iterator<? extends StorageView<ItemVariant>> itr = storage.nonEmptyIterator();
 			StorageView<ItemVariant> currentView = itr.hasNext() ? itr.next() : null;
 			while (currentView != null) {
 				long contained = currentView.getAmount();
@@ -654,49 +547,24 @@ public class TransferUtil implements ModInitializer {
 	 * Extract anything matching the given predicate, or null if none available.
 	 */
 	@Nullable
-	public static <T> ResourceAmount<T> extractMatching(Storage<T> storage, Predicate<T> predicate, long maxAmount, TransactionContext t) {
-		if (storage instanceof ExtendedStorage<T> extended)
-			return extended.extractMatching(predicate, maxAmount, t);
+	public static <T extends TransferVariant<?>> ResourceAmount<T> extractMatching(Storage<T> storage, Predicate<T> predicate,
+																				   long maxAmount, @Nullable TransactionContext ctx) {
 		T variant = null;
-		for (StorageView<T> view : getNonEmpty(storage)) {
+		for (StorageView<T> view : storage.nonEmptyViews()) {
 			T resource = view.getResource();
 			if (predicate.test(resource)) {
 				variant = resource;
 				break;
 			}
 		}
-		if (variant == null)
+		if (variant == null || variant.isBlank())
 			return null;
-		long extracted = storage.extract(variant, maxAmount, t);
-		if (extracted == 0)
-			return null;
-		return new ResourceAmount<>(variant, extracted);
-	}
-
-	/**
-	 * @return all non-empty StorageViews of the given storage
-	 */
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	public static <T> Iterable<? extends StorageView<T>> getNonEmpty(Storage<T> storage) {
-		if (storage instanceof ExtendedStorage<T> extended)
-			return extended.nonEmptyIterable();
-		return () -> (Iterator) Iterators.filter(storage.iterator(), view -> !view.isResourceBlank());
-	}
-
-	/**
-	 * @deprecated use StorageProvider
-	 */
-	@Deprecated(forRemoval = true)
-	public static BlockApiCache<Storage<ItemVariant>, Direction> getItemCache(Level level, BlockPos pos) {
-		return level.port_lib$getItemCache(pos);
-	}
-
-	/**
-	 * @deprecated use StorageProvider
-	 */
-	@Deprecated(forRemoval = true)
-	public static BlockApiCache<Storage<FluidVariant>, Direction> getFluidCache(Level level, BlockPos pos) {
-		return level.port_lib$getFluidApiCache(pos);
+		try (Transaction t = Transaction.openNested(ctx)) {
+			long extracted = storage.extract(variant, maxAmount, t);
+			if (extracted == 0)
+				return null;
+			return new ResourceAmount<>(variant, extracted);
+		}
 	}
 
 	/**
@@ -709,13 +577,5 @@ public class TransferUtil implements ModInitializer {
 			return Integer.MIN_VALUE;
 		}
 		return (int) l;
-	}
-
-	/**
-	 * Initialize the ItemTransferable and FluidTransferable fallback callbacks.
-	 */
-	@Override
-	public void onInitialize() {
-
 	}
 }

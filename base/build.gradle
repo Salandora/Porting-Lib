@@ -1,13 +1,14 @@
 moduleDependencies(project, [
 		"lazy_registration",
-		"fake_players",
 		"ingredients",
 		"extensions",
 		"transfer",
 		"utility",
 		"entity",
 		"common",
-		"tags"
+		"tags",
+		"asm",
+		"screen"
 ])
 
 mixinExtras(dependencies)

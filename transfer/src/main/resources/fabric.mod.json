@@ -5,9 +5,6 @@
   "name": "Porting Lib Transfer",
   "description": "Utilities for transferring items and fluids.",
   "entrypoints": {
-    "main": [
-      "io.github.fabricators_of_create.porting_lib.transfer.TransferUtil"
-    ],
     "client": [
       "io.github.fabricators_of_create.porting_lib.PortingLibTransfer"
     ]

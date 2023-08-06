@@ -52,7 +52,7 @@ public class BlockModelMixin implements BlockModelExtensions {
 		BlockModel blockModel = self();
 
 		if (getCustomGeometry() != null) {
-			cir.setReturnValue(getCustomGeometry().bake(blockModel, modelBaker, spriteGetter, modelTransform, blockModel.getOverrides(modelBaker, ownerModel, spriteGetter), modelLocation));
+			cir.setReturnValue(getCustomGeometry().bake(blockModel, modelBaker, spriteGetter, modelTransform, blockModel.getOverrides(modelBaker, ownerModel, spriteGetter), modelLocation, guiLight3d));
 		}
 	}
 

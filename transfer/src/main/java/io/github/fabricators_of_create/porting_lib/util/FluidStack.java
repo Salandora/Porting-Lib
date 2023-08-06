@@ -14,13 +14,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributes;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
@@ -229,7 +226,7 @@ public class FluidStack {
 		return tag != null;
 	}
 
-	public static FluidStack fromBuffer(FriendlyByteBuf buffer) {
+	public static FluidStack readFromBuffer(FriendlyByteBuf buffer) {
 		FluidVariant fluid = FluidVariant.fromPacket(buffer);
 		long amount = buffer.readVarLong();
 		CompoundTag tag = buffer.readNbt();
@@ -237,14 +234,10 @@ public class FluidStack {
 		return new FluidStack(fluid, amount, tag);
 	}
 
-	public FriendlyByteBuf toBuffer(FriendlyByteBuf buffer) {
-		return toBuffer(this, buffer);
-	}
-
-	public static FriendlyByteBuf toBuffer(FluidStack stack, FriendlyByteBuf buffer) {
-		stack.getType().toPacket(buffer);
-		buffer.writeVarLong(stack.getAmount());
-		buffer.writeNbt(stack.tag);
+	public FriendlyByteBuf writeToPacket(FriendlyByteBuf buffer) {
+		getType().toPacket(buffer);
+		buffer.writeVarLong(getAmount());
+		buffer.writeNbt(getTag());
 		return buffer;
 	}
 

@@ -9,10 +9,10 @@ import net.minecraft.world.item.ItemStack;
 
 public class SlotItemHandler extends Slot {
 	private static final Container emptyInventory = new SimpleContainer(0);
-	private final SlotExposedStorage itemHandler;
+	private final SlottedStackStorage itemHandler;
 	private final int index;
 
-	public SlotItemHandler(SlotExposedStorage itemHandler, int index, int xPosition, int yPosition) {
+	public SlotItemHandler(SlottedStackStorage itemHandler, int index, int xPosition, int yPosition) {
 		super(emptyInventory, index, xPosition, yPosition);
 		this.itemHandler = itemHandler;
 		this.index = index;
@@ -22,18 +22,18 @@ public class SlotItemHandler extends Slot {
 	public boolean mayPlace(ItemStack stack) {
 		if (stack.isEmpty())
 			return false;
-		return itemHandler.isItemValid(index, ItemVariant.of(stack), stack.getCount());
+		return itemHandler.isItemValid(this.index, ItemVariant.of(stack));
 	}
 
 	@Override
 	public ItemStack getItem() {
-		return itemHandler.getStackInSlot(index);
+		return itemHandler.getStackInSlot(this.index);
 	}
 
 	// Override if your IItemHandler does not implement IItemHandlerModifiable
 	@Override
 	public void set(ItemStack stack) {
-		itemHandler.setStackInSlot(index, stack);
+		itemHandler.setStackInSlot(this.index, stack);
 		this.setChanged();
 	}
 
@@ -43,17 +43,17 @@ public class SlotItemHandler extends Slot {
 
 	@Override
 	public int getMaxStackSize() {
-		return this.itemHandler.getSlotLimit(this.index);
+		return itemHandler.getSlotLimit(this.index);
 	}
 
 	@Override
 	public int getMaxStackSize(ItemStack stack) {
-		return getItemHandler().getSlotLimit(index);
+		return getItemHandler().getSlotLimit(this.index);
 	}
 
 	@Override
 	public boolean mayPickup(Player playerIn) {
-		return !itemHandler.getStackInSlot(index).isEmpty();
+		return !itemHandler.getStackInSlot(this.index).isEmpty();
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class SlotItemHandler extends Slot {
 		return removed;
 	}
 
-	public SlotExposedStorage getItemHandler() {
+	public SlottedStackStorage getItemHandler() {
 		return itemHandler;
 	}
 }
