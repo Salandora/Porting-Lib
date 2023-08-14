@@ -2,14 +2,17 @@ package io.github.fabricators_of_create.porting_lib.transfer.item;
 
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+
+import org.jetbrains.annotations.Nullable;
 
 public class ItemStackHandlerSlot extends SingleStackStorage {
 	private final int index;
 	private final ItemStackHandler handler;
-	private ItemStack stack = ItemStack.EMPTY;
-	private ItemStack lastStack;
-	private ItemVariant variant = ItemVariant.blank();
+	private ItemStack stack;
+	private ItemStack lastStack; // last stack pre-transaction
+	private ItemVariant variant;
 
 	public ItemStackHandlerSlot(int index, ItemStackHandler handler, ItemStack initial) {
 		this.index = index;
@@ -34,8 +37,11 @@ public class ItemStackHandlerSlot extends SingleStackStorage {
 		return this.stack;
 	}
 
+	/**
+	 * Should only be used in transactions.
+	 */
 	@Override
-	public void setStack(ItemStack stack) {
+	protected void setStack(ItemStack stack) {
 		this.stack = stack;
 		this.variant = ItemVariant.of(stack);
 	}
@@ -43,11 +49,6 @@ public class ItemStackHandlerSlot extends SingleStackStorage {
 	public void setNewStack(ItemStack stack) {
 		this.setStack(stack);
 		this.onFinalCommit();
-	}
-	public void setNewStackInternal(ItemStack stack) {
-		this.setStack(stack);
-		this.handler.onStackChange(this, this.lastStack, this.stack);
-		this.lastStack = this.stack;
 	}
 
 	@Override
@@ -61,8 +62,36 @@ public class ItemStackHandlerSlot extends SingleStackStorage {
 
 	@Override
 	protected void onFinalCommit() {
-		this.handler.onStackChange(this, this.lastStack, this.stack);
-		this.lastStack = this.stack;
-		this.handler.onContentsChanged(this.index);
+		onStackChange();
+		notifyHandlerOfChange();
+	}
+
+	protected void onStackChange() {
+		handler.onStackChange(this, lastStack, stack);
+		this.lastStack = stack;
+	}
+
+	protected void notifyHandlerOfChange() {
+		handler.onContentsChanged(index);
+	}
+
+	/**
+	 * Save this slot to a new NBT tag.
+	 * Note that "Slot" is a reserved key.
+	 * @return null to skip saving this slot
+	 */
+	@Nullable
+	public CompoundTag save() {
+		return stack.isEmpty() ? null : stack.save(new CompoundTag());
+	}
+
+	public void load(CompoundTag tag) {
+		load(ItemStack.of(tag));
+	}
+
+	public void load(ItemStack stack) {
+		setStack(stack);
+		onStackChange();
+		// intentionally do not notify handler, matches forge
 	}
 }
