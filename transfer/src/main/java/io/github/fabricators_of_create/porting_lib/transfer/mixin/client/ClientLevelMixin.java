@@ -5,18 +5,15 @@ import io.github.fabricators_of_create.porting_lib.extensions.transfer.LevelExte
 import io.github.fabricators_of_create.porting_lib.transfer.cache.ClientBlockApiCache;
 import io.github.fabricators_of_create.porting_lib.transfer.cache.ClientFluidLookupCache;
 import io.github.fabricators_of_create.porting_lib.transfer.cache.ClientItemLookupCache;
+import io.github.fabricators_of_create.porting_lib.util.MixinHelper;
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
-
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiCache;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.client.multiplayer.ClientLevel;
-
 import net.minecraft.core.BlockPos;
-
 import net.minecraft.core.Direction;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -77,11 +74,11 @@ public class ClientLevelMixin implements LevelExtensions, ClientLevelExtensions 
 
 	@Override
 	public BlockApiCache<Storage<ItemVariant>, Direction> port_lib$getItemCache(BlockPos pos) {
-		return ClientItemLookupCache.get(((ClientLevel) (Object) this), pos);
+		return ClientItemLookupCache.get(MixinHelper.cast(this), pos);
 	}
 
 	@Override
 	public BlockApiCache<Storage<FluidVariant>, Direction> port_lib$getFluidApiCache(BlockPos pos) {
-		return ClientFluidLookupCache.get(((ClientLevel) (Object) this), pos);
+		return ClientFluidLookupCache.get(MixinHelper.cast(this), pos);
 	}
 }

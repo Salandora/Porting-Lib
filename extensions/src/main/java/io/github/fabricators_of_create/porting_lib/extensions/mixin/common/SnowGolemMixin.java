@@ -1,14 +1,7 @@
 package io.github.fabricators_of_create.porting_lib.extensions.mixin.common;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import io.github.fabricators_of_create.porting_lib.extensions.extensions.IShearable;
-
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
-
+import io.github.fabricators_of_create.porting_lib.util.MixinHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -17,7 +10,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,7 +37,7 @@ public abstract class SnowGolemMixin implements IShearable {
 	@Nonnull
 	@Override
 	public List<ItemStack> onSheared(@Nullable Player player, @Nonnull ItemStack item, Level world, BlockPos pos, int fortune) {
-		world.playSound(null, (SnowGolem) (Object) this, SoundEvents.SNOW_GOLEM_SHEAR, player == null ? SoundSource.BLOCKS : SoundSource.PLAYERS, 1.0F, 1.0F);
+		world.playSound(null, MixinHelper.<SnowGolem>cast(this), SoundEvents.SNOW_GOLEM_SHEAR, player == null ? SoundSource.BLOCKS : SoundSource.PLAYERS, 1.0F, 1.0F);
 		if (!world.isClientSide()) {
 			setPumpkin(false);
 			return Collections.singletonList(new ItemStack(Items.CARVED_PUMPKIN));

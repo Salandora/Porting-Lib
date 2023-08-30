@@ -1,6 +1,9 @@
 moduleDependencies(project, [
-		"extensions"
+		"model_loader",
+		"transfer"
 ])
+
+mixinExtras(dependencies)
 
 processResources {
 	duplicatesStrategy = DuplicatesStrategy.WARN

@@ -1,15 +1,5 @@
 package io.github.fabricators_of_create.porting_lib.transfer;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Predicate;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
@@ -35,6 +25,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * Utilities for transferring things.
@@ -57,8 +52,7 @@ public class TransferUtil {
 	 */
 	public static Transaction getTransaction() {
 		if (Transaction.isOpen()) {
-			//noinspection deprecation
-			TransactionContext open = Transaction.getCurrentUnsafe();
+			@SuppressWarnings({"deprecation", "UnstableApiUsage"}) TransactionContext open = Transaction.getCurrentUnsafe();
 			if (open != null) {
 				return open.openNested();
 			}

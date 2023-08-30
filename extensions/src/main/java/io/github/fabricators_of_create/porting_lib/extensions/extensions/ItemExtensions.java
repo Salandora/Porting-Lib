@@ -1,24 +1,9 @@
 package io.github.fabricators_of_create.porting_lib.extensions.extensions;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.resources.ResourceLocation;
+import io.github.fabricators_of_create.porting_lib.util.ToolAction;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.EnchantedBookItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.PotionItem;
-import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.item.TippedArrowItem;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
-
-import javax.annotation.Nonnull;
 import org.jetbrains.annotations.Nullable;
 
 public interface ItemExtensions {
@@ -50,5 +35,9 @@ public interface ItemExtensions {
 	@Nullable
 	default Entity createEntity(Level level, Entity location, ItemStack stack) {
 		return null;
+	}
+
+	default boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+		throw new RuntimeException("this should be overridden via mixin. what?");
 	}
 }

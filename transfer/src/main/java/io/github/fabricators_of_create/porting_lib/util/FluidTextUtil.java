@@ -1,28 +1,26 @@
 package io.github.fabricators_of_create.porting_lib.util;
 
-import java.text.NumberFormat;
-import java.util.Locale;
-
 import com.google.common.math.LongMath;
-
-import io.github.fabricators_of_create.porting_lib.PortingConstants;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.Unit;
 import net.minecraft.util.profiling.ProfilerFiller;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 /**
  * A few helpers to display fluids.
  * Stolen from Modern-Industrialization
  */
 public class FluidTextUtil {
-
 	public static final Format NUMBER_FORMAT = new Format();
 
 	public static class Format extends SimplePreparableReloadListener<Unit> implements IdentifiableResourceReloadListener {
-		public static final ResourceLocation ID = PortingConstants.id("format_reload_listener");
+		public static final ResourceLocation ID = new ResourceLocation("porting-lib", "format_reload_listener");
 		private NumberFormat format = NumberFormat.getNumberInstance(Locale.ROOT);
 
 		private Format() {}
@@ -32,7 +30,7 @@ public class FluidTextUtil {
 		}
 
 		public void update() {
-			format = NumberFormat.getInstance(MinecraftClientUtil.getLocale());
+			format = NumberFormat.getInstance(getLocale());
 			format.setMaximumFractionDigits(2);
 			format.setMinimumFractionDigits(0);
 			format.setGroupingUsed(true);
@@ -52,6 +50,16 @@ public class FluidTextUtil {
 		public ResourceLocation getFabricId() {
 			return ID;
 		}
+	}
+
+	public static Locale getLocale() {
+		String language = Minecraft.getInstance().getLanguageManager().getSelected();
+		if (!language.contains("_")) { // Vanilla has some languages without underscores
+			return new Locale(language);
+		}
+
+		String[] splitLangCode = language.split("_", 2);
+		return new Locale(splitLangCode[0], splitLangCode[1]);
 	}
 
 	static String format(double d) {

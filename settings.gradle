@@ -8,13 +8,10 @@ pluginManagement {
 }
 rootProject.name = "Porting-Lib"
 
-//include("base")
-include("common")
-include("constants")
 include("extensions")
 include("networking")
 include("tags")
 include("transfer")
-include("lazy_registration")
 include("model_loader")
+include("models")
 include("utility")

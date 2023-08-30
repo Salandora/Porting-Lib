@@ -1,17 +1,13 @@
 package io.github.fabricators_of_create.porting_lib.extensions.mixin.common;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-
-import io.github.fabricators_of_create.porting_lib.PortingConstants;
 import io.github.fabricators_of_create.porting_lib.extensions.extensions.BlockEntityExtensions;
 import io.github.fabricators_of_create.porting_lib.extensions.extensions.LevelExtensions;
 import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
-
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
-
+import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -21,10 +17,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.state.BlockState;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 @Mixin(value = Level.class, priority = 1100) // need to apply after lithium
 public abstract class LevelMixin implements LevelAccessor, LevelExtensions {
@@ -83,7 +79,6 @@ public abstract class LevelMixin implements LevelAccessor, LevelExtensions {
 				if (data.pos().equals(pos)) {
 					BlockState state = data.state();
 					if (state == null) {
-						PortingConstants.LOGGER.error("null blockstate stored in snapshots at " + pos);
 						new Throwable().printStackTrace();
 					} else {
 						cir.setReturnValue(state);
@@ -98,7 +93,6 @@ public abstract class LevelMixin implements LevelAccessor, LevelExtensions {
 			at = @At(value = "INVOKE", shift = Shift.BEFORE, target = "Lnet/minecraft/world/level/Level;getChunkAt(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/chunk/LevelChunk;"), cancellable = true)
 	private void port_lib$setBlock(BlockPos pos, BlockState state, int flags, int recursionLeft, CallbackInfoReturnable<Boolean> cir) {
 		if (state == null) {
-			PortingConstants.LOGGER.error("Setting null blockstate at " + pos);
 			new Throwable().printStackTrace();
 		}
 		if (port_lib$modifiedStates != null) {

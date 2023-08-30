@@ -1,11 +1,10 @@
 package io.github.fabricators_of_create.porting_lib.extensions.mixin.common;
 
 import com.mojang.datafixers.util.Pair;
-
 import io.github.fabricators_of_create.porting_lib.extensions.extensions.SlotExtensions;
+import io.github.fabricators_of_create.porting_lib.util.MixinHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.Slot;
-
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,7 +32,7 @@ public abstract class SlotMixin implements SlotExtensions {
 	@Override
 	public Slot setBackground(ResourceLocation atlas, ResourceLocation sprite) {
 		this.port_lib$backgroundPair = Pair.of(atlas, sprite);
-		return (Slot) (Object) this;
+		return MixinHelper.cast(this);
 	}
 
 	@Unique
