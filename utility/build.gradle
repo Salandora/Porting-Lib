@@ -3,6 +3,8 @@ moduleDependencies(project, [
 		"tags"
 ])
 
+mixinExtras(dependencies)
+
 processResources {
 	duplicatesStrategy = DuplicatesStrategy.WARN
 }

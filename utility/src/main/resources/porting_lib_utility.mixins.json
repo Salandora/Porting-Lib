@@ -8,8 +8,12 @@
     "client.ClientLevelMixin"
   ],
   "mixins": [
+    "common.EnderDragonMixin",
+    "common.ExplosionDamageCalculatorMixin",
     "common.PersistentEntitySectionManagerMixin",
-    "common.ServerLevelMixin"
+    "common.ServerLevelMixin",
+    "common.WitherBossMixin",
+    "common.WitherSkullMixin"
   ],
   "injectors": {
     "defaultRequire": 1,
