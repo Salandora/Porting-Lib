@@ -1,6 +1,5 @@
 package io.github.fabricators_of_create.porting_lib.extensions.extensions;
 
-import io.github.fabricators_of_create.porting_lib.util.ToolAction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -35,9 +34,5 @@ public interface ItemExtensions {
 	@Nullable
 	default Entity createEntity(Level level, Entity location, ItemStack stack) {
 		return null;
-	}
-
-	default boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
-		throw new RuntimeException("this should be overridden via mixin. what?");
 	}
 }

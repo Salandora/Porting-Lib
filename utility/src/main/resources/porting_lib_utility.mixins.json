@@ -5,13 +5,10 @@
   "package": "io.github.fabricators_of_create.porting_lib.utility.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "client.ClientLevelMixin"
   ],
   "mixins": [
     "common.EnderDragonMixin",
     "common.ExplosionDamageCalculatorMixin",
-    "common.PersistentEntitySectionManagerMixin",
-    "common.ServerLevelMixin",
     "common.WitherBossMixin",
     "common.WitherSkullMixin"
   ],

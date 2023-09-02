@@ -1,6 +1,5 @@
 package io.github.fabricators_of_create.porting_lib.transfer.fluid.block;
 
-import io.github.fabricators_of_create.porting_lib.transfer.callbacks.TransactionSuccessCallback;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.ExtractionOnlyStorage;
@@ -27,7 +26,11 @@ public class BucketPickupHandlerWrapper implements SingleSlotStorage<FluidVarian
 		if (!resource.isBlank() && FluidConstants.BUCKET <= maxAmount) {
 			FluidState fluidState = world.getFluidState(blockPos);
 			if (!fluidState.isEmpty() && resource.getFluid() == fluidState.getType()) {
-				TransactionSuccessCallback.onSuccess(tx, () -> bucketPickupHandler.pickupBlock(world, blockPos, world.getBlockState(blockPos)));
+				tx.addOuterCloseCallback(result -> {
+					if (result.wasCommitted()) {
+						bucketPickupHandler.pickupBlock(world, blockPos, world.getBlockState(blockPos));
+					}
+				});
 				if (resource.equals(FluidVariant.of(fluidState.getType()))) {
 					return FluidConstants.BUCKET;
 				}
