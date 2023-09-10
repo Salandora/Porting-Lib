@@ -1,20 +1,22 @@
 package io.github.fabricators_of_create.porting_lib.models.geometry;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
+
 import com.google.common.collect.ImmutableMap;
+
 import io.github.fabricators_of_create.porting_lib.models.PortingConstants;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.CustomValue;
 import net.fabricmc.loader.api.metadata.CustomValue.CvType;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Manager for {@linkplain IGeometryLoader geometry loaders}.
@@ -94,7 +96,8 @@ public final class GeometryLoaderManager {
 			StringBuilder out = new StringBuilder("Registered %s provided loaders: ".formatted(providedLoaders.size()));
 			for (ResourceLocation loader : providedLoaders) {
 				out.append(loader).append(", ");
-				loaders.put(loader, NullGeometryLoader.INSTANCE);
+				loaders.put(loader, null);
+				KNOWN_MISSING_LOADERS.add(loader);
 			}
 			PortingConstants.LOGGER.info(out.substring(0, out.length() - 2)); // cut off final ", "
 		}
