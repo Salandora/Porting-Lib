@@ -10,6 +10,7 @@
     "common.ItemMixin",
     "common.ItemStackMixin",
     "common.LeavesBlockMixin",
+    "common.LevelChunkMixin",
     "common.LevelMixin",
     "common.MushroomCowMixin",
     "common.SeagrassBlockMixin",
