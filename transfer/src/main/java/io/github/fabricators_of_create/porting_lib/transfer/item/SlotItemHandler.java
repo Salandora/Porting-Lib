@@ -1,5 +1,7 @@
 package io.github.fabricators_of_create.porting_lib.transfer.item;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -22,45 +24,48 @@ public class SlotItemHandler extends Slot {
 	public boolean mayPlace(ItemStack stack) {
 		if (stack.isEmpty())
 			return false;
-		return itemHandler.isItemValid(this.index, ItemVariant.of(stack));
+
+		return this.getItemHandler().isItemValid(this.index, ItemVariant.of(stack));
 	}
 
 	@Override
+	@NotNull
 	public ItemStack getItem() {
-		return itemHandler.getStackInSlot(this.index);
+		return this.getItemHandler().getStackInSlot(this.index);
 	}
 
 	// Override if your IItemHandler does not implement IItemHandlerModifiable
 	@Override
 	public void set(ItemStack stack) {
-		itemHandler.setStackInSlot(this.index, stack);
+		this.getItemHandler().setStackInSlot(this.index, stack);
 		this.setChanged();
 	}
 
 	@Override
-	public void onQuickCraft(ItemStack oldStackIn, ItemStack newStackIn) {
+	public void onQuickCraft(@NotNull ItemStack oldStackIn, @NotNull ItemStack newStackIn) {
 	}
 
 	@Override
 	public int getMaxStackSize() {
-		return itemHandler.getSlotLimit(this.index);
+		return this.getItemHandler().getSlotLimit(this.index);
 	}
 
 	@Override
-	public int getMaxStackSize(ItemStack stack) {
+	public int getMaxStackSize(@NotNull ItemStack stack) {
 		return getItemHandler().getSlotLimit(this.index);
 	}
 
 	@Override
-	public boolean mayPickup(Player playerIn) {
-		return !itemHandler.getStackInSlot(this.index).isEmpty();
+	public boolean mayPickup(@NotNull Player playerIn) {
+		return !this.getItemHandler().getStackInSlot(this.index).isEmpty();
 	}
 
 	@Override
+	@NotNull
 	public ItemStack remove(int amount) {
-		ItemStack held = itemHandler.getStackInSlot(index).copy();
+		ItemStack held = this.getItemHandler().getStackInSlot(this.index).copy();
 		ItemStack removed = held.split(amount);
-		itemHandler.setStackInSlot(index, held);
+		this.getItemHandler().setStackInSlot(this.index, held);
 		return removed;
 	}
 
