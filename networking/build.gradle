@@ -1,3 +1,5 @@
+fabricModule(project, ["fabric-lifecycle-events-v1", "fabric-networking-api-v1"])
+
 processResources {
 	duplicatesStrategy = DuplicatesStrategy.WARN
 }

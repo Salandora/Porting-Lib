@@ -5,6 +5,8 @@ moduleDependencies(project, [
 
 mixinExtras(dependencies)
 
+fabricModule(project, ["fabric-lifecycle-events-v1"])
+
 processResources {
 	duplicatesStrategy = DuplicatesStrategy.WARN
 }

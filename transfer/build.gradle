@@ -2,6 +2,8 @@ moduleDependencies(project, [
 		"extensions"
 ])
 
+fabricModule(project, ["fabric-api-lookup-api-v1", "fabric-lifecycle-events-v1", "fabric-transfer-api-v1"])
+
 processResources {
 	duplicatesStrategy = DuplicatesStrategy.WARN
 }

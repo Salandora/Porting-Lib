@@ -1,19 +1,19 @@
 package me.alphamode.forgetags.data;
 
+import java.util.concurrent.CompletableFuture;
+
+import org.jetbrains.annotations.NotNull;
+
 import me.alphamode.forgetags.Tags;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
-
-import java.util.concurrent.CompletableFuture;
 
 public final class BiomeTagsProvider extends FabricTagProvider<Biome> {
 
@@ -97,7 +97,7 @@ public final class BiomeTagsProvider extends FabricTagProvider<Biome> {
 		}
 	}
 
-	public FabricTagBuilder tag(TagKey<Biome> tag) {
+	public @NotNull FabricTagBuilder tag(@NotNull TagKey<Biome> tag) {
 		return getOrCreateTagBuilder(tag);
 	}
 }
