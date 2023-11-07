@@ -18,6 +18,7 @@
         <emptyLine />
         <package name="net.minecraft" withSubpackages="true" static="false" />
         <package name="net.p3pp3rf1y" withSubpackages="true" static="false" />
+        <package name="io.github.fabricators_of_create.porting_lib" withSubpackages="true" static="false" />
         <package name="net.fabricmc" withSubpackages="true" static="false" />
         <emptyLine />
         <package name="" withSubpackages="true" static="false" />
