@@ -1,10 +1,23 @@
 package io.github.fabricators_of_create.porting_lib.models.geometry.mixin.client;
 
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.math.Transformation;
+
 import io.github.fabricators_of_create.porting_lib.models.PortingConstants;
 import io.github.fabricators_of_create.porting_lib.models.geometry.GeometryLoaderManager;
 import io.github.fabricators_of_create.porting_lib.models.geometry.IGeometryLoader;
@@ -13,22 +26,11 @@ import net.minecraft.client.renderer.block.model.BlockElement;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 @Mixin(BlockModel.Deserializer.class)
 public abstract class BlockModelDeserializerMixin {
 
-	@Inject(method = "deserialize(Lcom/google/gson/JsonElement;Ljava/lang/reflect/Type;Lcom/google/gson/JsonDeserializationContext;)Lnet/minecraft/client/renderer/block/model/BlockModel;", at = @At("RETURN"), cancellable = true)
+	@Inject(method = "deserialize(Lcom/google/gson/JsonElement;Ljava/lang/reflect/Type;Lcom/google/gson/JsonDeserializationContext;)Lnet/minecraft/client/renderer/block/model/BlockModel;", at = @At("RETURN"))
 	public void modelLoading(JsonElement element, Type type, JsonDeserializationContext deserializationContext, CallbackInfoReturnable<BlockModel> cir) {
 		BlockModel model = cir.getReturnValue();
 		JsonObject jsonobject = element.getAsJsonObject();
