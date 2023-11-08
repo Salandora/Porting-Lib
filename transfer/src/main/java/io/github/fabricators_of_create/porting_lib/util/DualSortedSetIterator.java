@@ -1,11 +1,10 @@
 package io.github.fabricators_of_create.porting_lib.util;
 
+import com.google.common.collect.AbstractIterator;
+
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.SortedSet;
-
-import com.google.common.collect.AbstractIterator;
-
 import org.jetbrains.annotations.Nullable;
 
 public class DualSortedSetIterator<T> extends AbstractIterator<T> {

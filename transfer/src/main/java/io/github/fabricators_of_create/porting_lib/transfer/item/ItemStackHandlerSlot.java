@@ -2,12 +2,7 @@ package io.github.fabricators_of_create.porting_lib.transfer.item;
 
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
-import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 import net.minecraft.world.item.ItemStack;
-
-import javax.annotation.Nullable;
 
 public class ItemStackHandlerSlot extends SingleStackStorage {
 	private final int index;

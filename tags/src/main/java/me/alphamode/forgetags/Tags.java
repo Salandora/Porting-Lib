@@ -1,25 +1,22 @@
 package me.alphamode.forgetags;
 
-import java.util.Set;
-import java.util.function.Supplier;
-
 import net.fabricmc.api.ModInitializer;
-
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBlockTags;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.world.entity.EntityType;
-
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
+
+import java.util.Set;
+import java.util.function.Supplier;
+import javax.annotation.Nullable;
 
 public class Tags implements ModInitializer {
 	@Override

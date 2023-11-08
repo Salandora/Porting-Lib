@@ -1,5 +1,9 @@
 package io.github.fabricators_of_create.porting_lib.extensions.mixin.common;
 
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+
 import io.github.fabricators_of_create.porting_lib.extensions.extensions.IShearable;
 import io.github.fabricators_of_create.porting_lib.util.MixinHelper;
 import net.minecraft.core.BlockPos;
@@ -10,14 +14,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 @Mixin(SnowGolem.class)
 public abstract class SnowGolemMixin implements IShearable {

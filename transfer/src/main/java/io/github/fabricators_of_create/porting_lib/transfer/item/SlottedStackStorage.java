@@ -1,16 +1,13 @@
 package io.github.fabricators_of_create.porting_lib.transfer.item;
 
-import net.fabricmc.fabric.api.transfer.v1.storage.SlottedStorage;
-
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
-
-import org.jetbrains.annotations.NotNull;
-
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.SlottedStorage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Iterator;
+import org.jetbrains.annotations.NotNull;
 
 public interface SlottedStackStorage extends SlottedStorage<ItemVariant> {
 	ItemStack getStackInSlot(int slot);

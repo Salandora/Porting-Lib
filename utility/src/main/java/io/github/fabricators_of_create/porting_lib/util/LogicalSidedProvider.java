@@ -1,15 +1,15 @@
 package io.github.fabricators_of_create.porting_lib.util;
 
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 import net.fabricmc.api.EnvType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.TickTask;
 import net.minecraft.util.thread.BlockableEventLoop;
 import net.minecraft.world.level.Level;
+
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class LogicalSidedProvider<T> {
 	public static final LogicalSidedProvider<BlockableEventLoop<? super TickTask>> WORKQUEUE = new LogicalSidedProvider<>(Supplier::get, Supplier::get);

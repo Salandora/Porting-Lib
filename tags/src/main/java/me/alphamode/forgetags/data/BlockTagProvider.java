@@ -1,5 +1,22 @@
 package me.alphamode.forgetags.data;
 
+import me.alphamode.forgetags.Tags;
+
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+
+import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+
 import static me.alphamode.forgetags.Tags.Blocks.BARRELS;
 import static me.alphamode.forgetags.Tags.Blocks.BARRELS_WOODEN;
 import static me.alphamode.forgetags.Tags.Blocks.CHESTS;
@@ -69,22 +86,6 @@ import static me.alphamode.forgetags.Tags.Blocks.STORAGE_BLOCKS_RAW_COPPER;
 import static me.alphamode.forgetags.Tags.Blocks.STORAGE_BLOCKS_RAW_GOLD;
 import static me.alphamode.forgetags.Tags.Blocks.STORAGE_BLOCKS_RAW_IRON;
 import static me.alphamode.forgetags.Tags.Blocks.STORAGE_BLOCKS_REDSTONE;
-
-import java.util.Locale;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
-
-import me.alphamode.forgetags.Tags;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 
 public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
 	public BlockTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {

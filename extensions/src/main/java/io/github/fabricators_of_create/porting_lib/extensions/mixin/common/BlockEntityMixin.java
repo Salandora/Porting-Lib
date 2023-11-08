@@ -1,19 +1,17 @@
 package io.github.fabricators_of_create.porting_lib.extensions.mixin.common;
 
-import io.github.fabricators_of_create.porting_lib.extensions.extensions.INBTSerializableCompound;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-
-import io.github.fabricators_of_create.porting_lib.extensions.extensions.BlockEntityExtensions;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import io.github.fabricators_of_create.porting_lib.extensions.extensions.BlockEntityExtensions;
+import io.github.fabricators_of_create.porting_lib.extensions.extensions.INBTSerializableCompound;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(BlockEntity.class)
 public abstract class BlockEntityMixin implements BlockEntityExtensions, INBTSerializableCompound {

@@ -1,6 +1,5 @@
 package io.github.fabricators_of_create.porting_lib.extensions.mixin.common;
 
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -21,6 +20,8 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.UpgradeData;
 import net.minecraft.world.level.levelgen.blending.BlendingData;
+
+import org.jetbrains.annotations.Nullable;
 
 @Mixin(LevelChunk.class)
 public abstract class LevelChunkMixin extends ChunkAccess {

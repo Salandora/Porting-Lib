@@ -1,26 +1,23 @@
 package io.github.fabricators_of_create.porting_lib.client.gui.controls;
 
-import java.util.Collections;
-import java.util.List;
-
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
-
-import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.client.gui.narration.NarratableEntry;
-import net.minecraft.client.renderer.GameRenderer;
-
-import com.mojang.blaze3d.systems.RenderSystem;
+import org.joml.Matrix4f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.renderer.GameRenderer;
 
-import org.joml.Matrix4f;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Abstract scroll panel class.

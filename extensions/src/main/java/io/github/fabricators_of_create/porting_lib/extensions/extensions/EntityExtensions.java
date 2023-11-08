@@ -1,9 +1,9 @@
 package io.github.fabricators_of_create.porting_lib.extensions.extensions;
 
-import java.util.Collection;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.item.ItemEntity;
+
+import java.util.Collection;
 
 public interface EntityExtensions {
 	default CompoundTag getExtraCustomData() {

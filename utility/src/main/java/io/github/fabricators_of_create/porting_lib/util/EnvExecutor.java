@@ -1,12 +1,10 @@
 package io.github.fabricators_of_create.porting_lib.util;
 
-import java.util.concurrent.Callable;
-import java.util.function.Supplier;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 
-import org.spongepowered.asm.mixin.MixinEnvironment;
+import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 
 public class EnvExecutor {
 	public static void runWhenOn(EnvType env, Supplier<Runnable> toRun) {

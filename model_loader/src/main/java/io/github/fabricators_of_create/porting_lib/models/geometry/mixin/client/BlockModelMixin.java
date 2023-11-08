@@ -1,14 +1,6 @@
 package io.github.fabricators_of_create.porting_lib.models.geometry.mixin.client;
 
-import java.util.List;
-import java.util.function.Function;
-
-import io.github.fabricators_of_create.porting_lib.models.geometry.VisibilityData;
-
-import net.minecraft.client.renderer.block.model.ItemOverride;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
-
-import org.jetbrains.annotations.Nullable;
+import com.mojang.math.Transformation;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -18,11 +10,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.mojang.math.Transformation;
-
 import io.github.fabricators_of_create.porting_lib.models.geometry.IUnbakedGeometry;
+import io.github.fabricators_of_create.porting_lib.models.geometry.VisibilityData;
 import io.github.fabricators_of_create.porting_lib.models.geometry.extensions.BlockModelExtensions;
 import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.client.renderer.block.model.ItemOverride;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
@@ -30,6 +23,10 @@ import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
+
+import java.util.List;
+import java.util.function.Function;
+import org.jetbrains.annotations.Nullable;
 
 @Mixin(BlockModel.class)
 public class BlockModelMixin implements BlockModelExtensions {

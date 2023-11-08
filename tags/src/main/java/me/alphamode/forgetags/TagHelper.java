@@ -3,15 +3,13 @@ package me.alphamode.forgetags;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 public class TagHelper {
 	public static <V> Optional<Holder.Reference<V>> getReverseTag(Registry<V> registry, @NotNull V value) {

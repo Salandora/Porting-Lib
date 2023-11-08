@@ -1,14 +1,10 @@
 package io.github.fabricators_of_create.porting_lib_build;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import com.google.gson.JsonParser;
-
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.TaskAction;
-import org.gradle.internal.impldep.bsh.commands.dir;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -19,10 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 import java.util.stream.Stream;
 
 public class DeduplicateInclusionsTask extends DefaultTask {

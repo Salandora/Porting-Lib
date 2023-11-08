@@ -1,6 +1,7 @@
 package me.alphamode.forgetags.data;
 
 import me.alphamode.forgetags.Tags;
+
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;

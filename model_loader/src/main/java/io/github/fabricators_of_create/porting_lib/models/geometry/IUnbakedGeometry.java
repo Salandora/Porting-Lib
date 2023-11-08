@@ -1,8 +1,5 @@
 package io.github.fabricators_of_create.porting_lib.models.geometry;
 
-import java.util.Set;
-import java.util.function.Function;
-
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -12,6 +9,9 @@ import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
+
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * General interface for any model that can be baked, superset of vanilla {@link UnbakedModel}.

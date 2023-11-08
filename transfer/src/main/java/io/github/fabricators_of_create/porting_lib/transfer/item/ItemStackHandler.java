@@ -1,10 +1,11 @@
 package io.github.fabricators_of_create.porting_lib.transfer.item;
 
+import it.unimi.dsi.fastutil.objects.ObjectAVLTreeSet;
+
 import io.github.fabricators_of_create.porting_lib.extensions.extensions.INBTSerializable;
 import io.github.fabricators_of_create.porting_lib.util.DualSortedSetIterator;
 import io.github.fabricators_of_create.porting_lib.util.EmptySortedSet;
 import io.github.fabricators_of_create.porting_lib.util.ItemStackUtil;
-import it.unimi.dsi.fastutil.objects.ObjectAVLTreeSet;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
@@ -15,12 +16,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-
 import net.minecraft.world.item.Items;
-
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +26,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
+import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 public class ItemStackHandler implements SlottedStackStorage, INBTSerializable<CompoundTag>  {
 	private final List<ItemStackHandlerSlot> slots;

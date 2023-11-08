@@ -1,5 +1,10 @@
 package io.github.fabricators_of_create.porting_lib.extensions.mixin.common;
 
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+
 import io.github.fabricators_of_create.porting_lib.extensions.extensions.IShearable;
 import io.github.fabricators_of_create.porting_lib.util.MixinHelper;
 import net.minecraft.core.BlockPos;
@@ -13,14 +18,10 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 
+import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Map;
 
 @Mixin(Sheep.class)
 public abstract class SheepMixin extends Entity implements IShearable {

@@ -1,7 +1,5 @@
 package io.github.fabricators_of_create.porting_lib.utility.mixin.common;
 
-import java.util.Optional;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -14,6 +12,8 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
+
+import java.util.Optional;
 
 @Mixin(ExplosionDamageCalculator.class)
 public abstract class ExplosionDamageCalculatorMixin {

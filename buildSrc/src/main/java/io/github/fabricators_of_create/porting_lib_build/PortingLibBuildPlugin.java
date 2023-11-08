@@ -2,7 +2,6 @@ package io.github.fabricators_of_create.porting_lib_build;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;

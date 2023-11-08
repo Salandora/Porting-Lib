@@ -1,26 +1,23 @@
 package io.github.fabricators_of_create.porting_lib.extensions.mixin.common;
 
-import java.util.Collection;
-
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
-
-import io.github.fabricators_of_create.porting_lib.extensions.extensions.INBTSerializableCompound;
-
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import io.github.fabricators_of_create.porting_lib.extensions.extensions.EntityExtensions;
+import io.github.fabricators_of_create.porting_lib.extensions.extensions.INBTSerializableCompound;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
 
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import java.util.Collection;
+import org.jetbrains.annotations.Nullable;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements EntityExtensions, INBTSerializableCompound {
