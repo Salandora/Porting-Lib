@@ -18,10 +18,13 @@
         <package name="io.github.fabricators_of_create.porting_lib" withSubpackages="true" static="false" />
         <package name="net.fabricmc" withSubpackages="true" static="false" />
         <package name="net.minecraft" withSubpackages="true" static="false" />
+        <package name="net.minecraftforge" withSubpackages="true" static="false" />
         <package name="net.p3pp3rf1y" withSubpackages="true" static="false" />
         <emptyLine />
         <package name="java" withSubpackages="true" static="false" />
         <package name="javax" withSubpackages="true" static="false" />
+        <package name="org.jetbrains.annotations" withSubpackages="true" static="false" />
+        <package name="org.slf4j" withSubpackages="true" static="false" />
         <emptyLine />
         <package name="" withSubpackages="true" static="true" />
       </value>
@@ -41,6 +44,7 @@
     <option name="FINALLY_ON_NEW_LINE" value="true" />
     <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
     <option name="ALIGN_MULTILINE_RESOURCES" value="false" />
+    <option name="SPACE_WITHIN_ARRAY_INITIALIZER_BRACES" value="true" />
     <option name="SPACE_BEFORE_ARRAY_INITIALIZER_LBRACE" value="true" />
     <option name="EXTENDS_KEYWORD_WRAP" value="1" />
     <option name="THROWS_KEYWORD_WRAP" value="1" />
@@ -59,6 +63,22 @@
     <indentOptions>
       <option name="USE_TAB_CHARACTER" value="true" />
     </indentOptions>
+    <arrangement>
+      <groups>
+        <group>
+          <type>GETTERS_AND_SETTERS</type>
+          <order>KEEP</order>
+        </group>
+        <group>
+          <type>OVERRIDDEN_METHODS</type>
+          <order>BY_NAME</order>
+        </group>
+        <group>
+          <type>DEPENDENT_METHODS</type>
+          <order>BREADTH_FIRST</order>
+        </group>
+      </groups>
+    </arrangement>
   </codeStyleSettings>
   <codeStyleSettings language="JSON">
     <indentOptions>
