@@ -3,8 +3,8 @@ package io.github.fabricators_of_create.porting_lib.loot.mixin;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import io.github.fabricators_of_create.porting_lib.extensions.extensions.LootContextExtensions;
 import io.github.fabricators_of_create.porting_lib.loot.LootTableIdCondition;
+import io.github.fabricators_of_create.porting_lib.loot.extensions.LootContextExtensions;
 import io.github.fabricators_of_create.porting_lib.util.PortingHooks;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.LootContext;

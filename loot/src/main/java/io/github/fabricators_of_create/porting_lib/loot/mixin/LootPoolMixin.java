@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import io.github.fabricators_of_create.porting_lib.extensions.extensions.LootPoolBuilderExtension;
-import io.github.fabricators_of_create.porting_lib.extensions.extensions.LootPoolExtensions;
+import io.github.fabricators_of_create.porting_lib.loot.extensions.LootPoolBuilderExtension;
+import io.github.fabricators_of_create.porting_lib.loot.extensions.LootPoolExtensions;
 import net.minecraft.world.level.storage.loot.LootPool;
 
 import java.lang.reflect.Type;
