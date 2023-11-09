@@ -10,7 +10,6 @@ import com.mojang.serialization.JsonOps;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import io.github.fabricators_of_create.porting_lib.PortingConstants;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -99,6 +98,6 @@ public class LootModifierManager extends SimpleJsonResourceReloadListener implem
 
 	@Override
 	public ResourceLocation getFabricId() {
-		return PortingConstants.id("loot_modifier_manager");
+		return PortingLibLoot.id("loot_modifier_manager");
 	}
 }

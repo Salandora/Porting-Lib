@@ -5,7 +5,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
-import io.github.fabricators_of_create.porting_lib.common.util.ToolAction;
+import io.github.fabricators_of_create.porting_lib.tool.ToolAction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
@@ -17,7 +17,7 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * This LootItemCondition "forge:can_tool_perform_action" can be used to check if a tool can perform a given ToolAction.
+ * This LootItemCondition "porting_lib:can_tool_perform_action" can be used to check if a tool can perform a given ToolAction.
  */
 public class CanToolPerformAction implements LootItemCondition {
 

@@ -20,6 +20,7 @@ The latest patch can be found from GitHub Actions as the build number.
 |-----------------------|--------------------------------------------------------------------------------------|
 | `Porting-Lib`         | Fat jar including all modules                                                        |
 | `extensions`          | Extensions to vanilla classes for additional functionality                           |
+| `loot`                | A small library to modify mob loot                                                   |
 | `model_loader`        | Base loader for custom model types                                                   |
 | `networking`          | A Forge-like packet system                                                           |
 | `tags`                | Forge tags                                                                           |

@@ -3,10 +3,9 @@ package io.github.fabricators_of_create.porting_lib.loot;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
-import io.github.fabricators_of_create.porting_lib.core.PortingLib;
 import io.github.fabricators_of_create.porting_lib.loot.extensions.LootTableBuilderExtensions;
-import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.core.Registry;
@@ -22,19 +21,22 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.storage.loot.LootContext;
 
 import java.util.List;
-import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 public class PortingLibLoot implements ModInitializer {
-	public static final ResourceKey<Registry<Codec<? extends IGlobalLootModifier>>> GLOBAL_LOOT_MODIFIER_SERIALIZERS_KEY = ResourceKey.createRegistryKey(PortingLib.id("global_loot_modifier_serializers"));
-	static final LazyRegistrar<Codec<? extends IGlobalLootModifier>> DEFERRED_GLOBAL_LOOT_MODIFIER_SERIALIZERS = LazyRegistrar.create(GLOBAL_LOOT_MODIFIER_SERIALIZERS_KEY, GLOBAL_LOOT_MODIFIER_SERIALIZERS_KEY.location().getNamespace());
-	public static final Supplier<Registry<Codec<? extends IGlobalLootModifier>>> GLOBAL_LOOT_MODIFIER_SERIALIZERS = DEFERRED_GLOBAL_LOOT_MODIFIER_SERIALIZERS.makeRegistry();
+	public static final String ID = "porting_lib";
+	public static ResourceLocation id(String path) {
+		return new ResourceLocation(ID, path);
+	}
+
+	public static final ResourceKey<Registry<Codec<? extends IGlobalLootModifier>>> GLOBAL_LOOT_MODIFIER_SERIALIZERS_KEY = ResourceKey.createRegistryKey(id("global_loot_modifier_serializers"));
+	public static final Registry<Codec<? extends IGlobalLootModifier>> GLOBAL_LOOT_MODIFIER_SERIALIZERS = FabricRegistryBuilder.createSimple(GLOBAL_LOOT_MODIFIER_SERIALIZERS_KEY).buildAndRegister();
 
 	@Override
 	public void onInitialize() {
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(LootModifierManager.INSTANCE);
-		Registry.register(BuiltInRegistries.LOOT_CONDITION_TYPE, PortingLib.id("loot_table_id"), LootTableIdCondition.LOOT_TABLE_ID);
-		Registry.register(BuiltInRegistries.LOOT_CONDITION_TYPE, PortingLib.id("can_tool_perform_action"), CanToolPerformAction.LOOT_CONDITION_TYPE);
+		Registry.register(BuiltInRegistries.LOOT_CONDITION_TYPE, id("loot_table_id"), LootTableIdCondition.LOOT_TABLE_ID);
+		Registry.register(BuiltInRegistries.LOOT_CONDITION_TYPE, id("can_tool_perform_action"), CanToolPerformAction.LOOT_CONDITION_TYPE);
 
 		LootTableEvents.MODIFY.register(
 				(resources, manager, id, builder, source) -> ((LootTableBuilderExtensions) builder).port_lib$setId(id)

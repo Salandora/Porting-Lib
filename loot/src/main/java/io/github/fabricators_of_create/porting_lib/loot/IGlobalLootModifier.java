@@ -8,7 +8,6 @@ import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.JsonOps;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
-import io.github.fabricators_of_create.porting_lib.PortingLibRegistries;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -20,11 +19,11 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Implementation that defines what a global loot modifier must implement in order to be functional.
  * {@link LootModifier} Supplies base functionality; most modders should only need to extend that.<br/>
- * Requires a {@link Codec} to be registered: {@link PortingLibRegistries#GLOBAL_LOOT_MODIFIER_SERIALIZERS}, and returned in {@link #codec()}
+ * Requires a {@link Codec} to be registered: {@link PortingLibLoot#GLOBAL_LOOT_MODIFIER_SERIALIZERS}, and returned in {@link #codec()}
  * Individual instances of modifiers must be registered via json, see forge:loot_modifiers/global_loot_modifiers
  */
 public interface IGlobalLootModifier {
-	Codec<IGlobalLootModifier> DIRECT_CODEC = ExtraCodecs.lazyInitializedCodec(() -> PortingLibRegistries.GLOBAL_LOOT_MODIFIER_SERIALIZERS.get().byNameCodec())
+	Codec<IGlobalLootModifier> DIRECT_CODEC = ExtraCodecs.lazyInitializedCodec(PortingLibLoot.GLOBAL_LOOT_MODIFIER_SERIALIZERS::byNameCodec)
 			.dispatch(IGlobalLootModifier::codec, Function.identity());
 
 	Codec<LootItemCondition[]> LOOT_CONDITIONS_CODEC = Codec.PASSTHROUGH.flatXmap(

@@ -7,7 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 
-import io.github.fabricators_of_create.porting_lib.util.LamdbaExceptionUtils;
+import io.github.fabricators_of_create.porting_lib.loot.util.LambdaExceptionUtils;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -60,7 +60,7 @@ public abstract class GlobalLootModifierProvider implements DataProvider {
 
 		ImmutableList.Builder<CompletableFuture<?>> futuresBuilder = new ImmutableList.Builder<>();
 
-		toSerialize.forEach(LamdbaExceptionUtils.rethrowBiConsumer((name, json) -> {
+		toSerialize.forEach(LambdaExceptionUtils.rethrowBiConsumer((name, json) -> {
 			entries.add(new ResourceLocation(modid, name));
 			Path modifierPath = modifierFolderPath.resolve(name + ".json");
 			futuresBuilder.add(DataProvider.saveStable(cache, json, modifierPath));

@@ -4,7 +4,11 @@ moduleDependencies(project, [
 
 mixinExtras(dependencies)
 
-fabricModule(project, ["fabric-resource-loader-v0"])
+fabricModule(project, [
+        "fabric-loot-api-v2",
+        "fabric-resource-loader-v0",
+        "fabric-registry-sync-v0"
+])
 
 processResources {
     duplicatesStrategy = DuplicatesStrategy.WARN
