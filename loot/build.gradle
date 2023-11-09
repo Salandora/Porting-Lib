@@ -1,0 +1,9 @@
+moduleDependencies(project, [
+        "tool_actions"
+])
+
+mixinExtras(dependencies)
+
+processResources {
+    duplicatesStrategy = DuplicatesStrategy.WARN
+}
