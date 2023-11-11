@@ -26,8 +26,9 @@ public class LootTableMixin implements LootTableExtensions {
 
 	@Override
 	public void setLootTableId(final ResourceLocation id) {
-		if (this.lootTableId != null)
+		if (this.lootTableId != null) {
 			throw new IllegalStateException("Attempted to rename loot table from '" + this.lootTableId + "' to '" + id + "': this is not supported");
+		}
 		this.lootTableId = Objects.requireNonNull(id);
 	}
 
@@ -42,7 +43,7 @@ public class LootTableMixin implements LootTableExtensions {
 			argsOnly = true
 	)
 	private Consumer<ItemStack> setupGlobalLootModification(Consumer<ItemStack> output,
-															LootContext context, Consumer<ItemStack> outputAgain) {
+			LootContext context, Consumer<ItemStack> outputAgain) {
 		context.setQueriedLootTableId(this.lootTableId); // this is needed before conditions are checked by pools
 		return new LootCollector(output); // collect loot, run through modifiers, send modified loot to original output
 	}
@@ -52,8 +53,9 @@ public class LootTableMixin implements LootTableExtensions {
 			at = @At("RETURN")
 	)
 	private void finishCollectingLoot(LootContext context, Consumer<ItemStack> output, CallbackInfo ci) {
-		if (output instanceof LootCollector collector)
+		if (output instanceof LootCollector collector) {
 			collector.finish(this.lootTableId, context);
+		}
 	}
 
 	@Mixin(LootTable.Builder.class)
@@ -68,7 +70,10 @@ public class LootTableMixin implements LootTableExtensions {
 
 		@ModifyReturnValue(method = "build", at = @At("RETURN"))
 		private LootTable addId(LootTable table) {
-			table.setLootTableId(this.id);
+			// Only set the id if it is not null
+			if (this.id != null) {
+				table.setLootTableId(this.id);
+			}
 			return table;
 		}
 	}
