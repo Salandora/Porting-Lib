@@ -1,11 +1,13 @@
 package io.github.fabricators_of_create.porting_lib.loot.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.fabricators_of_create.porting_lib.loot.LootCollector;
@@ -19,8 +21,16 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import static net.minecraft.world.level.storage.loot.LootTable.createStackSplitter;
+
 @Mixin(LootTable.class)
-public class LootTableMixin implements LootTableExtensions {
+public abstract class LootTableMixin implements LootTableExtensions {
+	@Shadow
+	public abstract ObjectArrayList<ItemStack> getRandomItems(LootContext context);
+
+	@Shadow
+	public abstract void getRandomItemsRaw(LootContext context, Consumer<ItemStack> lootConsumer);
+
 	@Unique
 	private ResourceLocation lootTableId;
 
@@ -37,43 +47,40 @@ public class LootTableMixin implements LootTableExtensions {
 		return this.lootTableId;
 	}
 
-	@ModifyVariable(
-			method = "getRandomItemsRaw(Lnet/minecraft/world/level/storage/loot/LootContext;Ljava/util/function/Consumer;)V",
-			at = @At("HEAD"),
-			argsOnly = true
-	)
-	private Consumer<ItemStack> setupGlobalLootModification(Consumer<ItemStack> output,
-			LootContext context, Consumer<ItemStack> outputAgain) {
-		context.setQueriedLootTableId(this.lootTableId); // this is needed before conditions are checked by pools
-		return new LootCollector(output); // collect loot, run through modifiers, send modified loot to original output
+	@Inject(method = "getRandomItems(Lnet/minecraft/world/level/storage/loot/LootContext;Ljava/util/function/Consumer;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItemsRaw(Lnet/minecraft/world/level/storage/loot/LootContext;Ljava/util/function/Consumer;)V"), cancellable = true)
+	private void portingLib$getRandomItems(LootContext context, Consumer<ItemStack> lootConsumer, CallbackInfo ci) {
+		this.getRandomItems(context).forEach(lootConsumer);
+		ci.cancel();
 	}
 
-	@Inject(
-			method = "getRandomItemsRaw(Lnet/minecraft/world/level/storage/loot/LootContext;Ljava/util/function/Consumer;)V",
-			at = @At("RETURN")
-	)
-	private void finishCollectingLoot(LootContext context, Consumer<ItemStack> output, CallbackInfo ci) {
-		if (output instanceof LootCollector collector) {
-			collector.finish(this.lootTableId, context);
-		}
+	@Redirect(method = "getRandomItems(Lnet/minecraft/world/level/storage/loot/LootContext;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItems(Lnet/minecraft/world/level/storage/loot/LootContext;Ljava/util/function/Consumer;)V"))
+	private void portingLib$getRandomItems(LootTable instance, LootContext context, Consumer<ItemStack> lootConsumer) {
+		LootCollector collector = new LootCollector(createStackSplitter(context, lootConsumer));
+		this.getRandomItemsRaw(context, collector);
+		collector.finish(this.getLootTableId(), context);
 	}
 
-	@Mixin(LootTable.Builder.class)
+	@Mixin({LootTable.Builder.class})
 	public static class BuilderMixin implements LootTableBuilderExtensions {
 		@Unique
 		private ResourceLocation id;
 
-		@Override
+		public BuilderMixin() {
+		}
+
 		public void port_lib$setId(ResourceLocation id) {
 			this.id = id;
 		}
 
-		@ModifyReturnValue(method = "build", at = @At("RETURN"))
+		@ModifyReturnValue(
+				method = {"build"},
+				at = {@At("RETURN")}
+		)
 		private LootTable addId(LootTable table) {
-			// Only set the id if it is not null
 			if (this.id != null) {
 				table.setLootTableId(this.id);
 			}
+
 			return table;
 		}
 	}
