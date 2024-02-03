@@ -60,7 +60,8 @@ public class LootPoolMixin implements LootPoolExtensions {
 				at = @At(
 						value = "INVOKE",
 						target = "Lcom/google/gson/JsonObject;add(Ljava/lang/String;Lcom/google/gson/JsonElement;)V",
-						ordinal = 0
+						ordinal = 0,
+						remap = false
 				),
 				locals = LocalCapture.CAPTURE_FAILHARD
 		)
