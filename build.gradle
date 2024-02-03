@@ -208,18 +208,6 @@ allprojects {
 		}
 	}
 
-	tasks.register("buildOrPublish") {
-		group = "build"
-		String mavenUser = System.getenv("MAVEN_USER")
-		if (mavenUser != null && !mavenUser.isEmpty()) {
-			dependsOn(tasks.named("publish"))
-			println "prepared for publish"
-		} else {
-			dependsOn(tasks.named("build"))
-			println "prepared for build"
-		}
-	}
-
 	machete {
 		if (buildNumber == null) {
 			enabled = false
@@ -239,14 +227,12 @@ allprojects {
 	publishing {
 		repositories {
 			maven {
-				url = "https://mvn.devos.one/snapshots/"
-				credentials {
-					username = System.getenv("MAVEN_USER")
-					password = System.getenv("MAVEN_PASS")
-				}
-				authentication {
-					basic(BasicAuthentication)
-				}
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/Salandora/Porting-Lib")
+                credentials {
+                    username = System.getenv("GITHUB_ACTOR")
+                    password = System.getenv("GITHUB_TOKEN")
+                }
 			}
 		}
 	}

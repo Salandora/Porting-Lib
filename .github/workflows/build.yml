@@ -7,51 +7,29 @@ jobs:
       matrix:
         java: [ 17 ]
     runs-on: ubuntu-latest
-    env:
-      MAVEN_USER: ${{ secrets.MAVEN_USER }}
-      MAVEN_PASS: ${{ secrets.MAVEN_PASS }}
     steps:
-
-      - name: checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
-
-      - name: setup jdk ${{ matrix.java }}
+      - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v3
         with:
           java-version: ${{ matrix.java }}
-          distribution: temurin
-
-      - name: setup Gradle
+          distribution: zulu
+          cache: gradle
+      - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
         with:
           cache-read-only: false
-
-      - name: make gradle wrapper executable
+      - name: Make gradle wrapper executable
         run: chmod +x ./gradlew
-
-      - name: build
-        run: ./gradlew buildOrPublish
-
-      - name: capture build artifacts
-        uses: actions/upload-artifact@v2
+      - name: Build with Gradle
+        run: ./gradlew build
+      - name: Publish to Github Packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew build publish
+      - name: Cleanup old artifacts
+        uses: actions/delete-package-versions@v3
         with:
-          name: Artifacts
-          path: build/libs/
-
-      - name: publish to Modrinth and Curseforge
-        uses: Kir-Antipov/mc-publish@v3.2
-        with:
-          modrinth-id: tEJPA4Ty
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          modrinth-featured: true
-
-          curseforge-id: 696251
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-
-          loaders: |
-            fabric
-            quilt
-
-          version-type: alpha
-
-          changelog: ${{ github.event.head_commit.message }}
+          package-name: 'porting-lib.porting-lib'
+          min-versions-to-keep: 50
