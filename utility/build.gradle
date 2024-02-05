@@ -3,8 +3,6 @@ moduleDependencies(project, [
 		"tags"
 ])
 
-mixinExtras(dependencies)
-
 fabricModule(project, ["fabric-lifecycle-events-v1"])
 
 processResources {

@@ -2,8 +2,6 @@ moduleDependencies(project, [
         "tool_actions"
 ])
 
-mixinExtras(dependencies)
-
 fabricModule(project, [
         "fabric-loot-api-v2",
         "fabric-resource-loader-v0",

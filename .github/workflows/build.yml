@@ -5,19 +5,25 @@ jobs:
   build:
     strategy:
       matrix:
-        java: [ 17 ]
+        # Use these Java versions
+        java: [
+          17,    # Current Java LTS & minimum supported by Minecraft
+          21,    # Current Java LTS
+        ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+      - name: Validate gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java }}
           distribution: zulu
           cache: gradle
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v3
         with:
           cache-read-only: false
       - name: Make gradle wrapper executable

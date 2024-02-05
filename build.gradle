@@ -1,21 +1,17 @@
 import io.github.fabricators_of_create.porting_lib_build.PortingLibBuildPlugin
 
-//file:noinspection GroovyAssignabilityCheck
-//file:noinspection GroovyAccessibility
 plugins {
-	id "fabric-loom" version "1.2.+"
-	id "io.github.juuxel.loom-vineflower" version "1.11.0" // Quiltflower, a better decompiler
-	id "io.github.p03w.machete" version "1.+" // automatic jar compressing on build
+	id "fabric-loom" version "1.5-SNAPSHOT"
 	id "org.ajoberstar.grgit" version "4.1.1"
 	id "maven-publish"
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
-archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
 
 String buildNumber = System.getenv("GITHUB_RUN_NUMBER")
 String patch = buildNumber != null ? buildNumber : "99999"
@@ -26,12 +22,6 @@ if (grgit != null) {
 	version += "+${grgit.getBranch().current().name}"
 } else {
 	version += "+custom_unknown"
-}
-
-@SuppressWarnings("unused") // for subprojects
-def mixinExtras(DependencyHandler deps) {
-	deps.implementation(deps.include("com.github.llamalad7.mixinextras:mixinextras-fabric:$mixin_extras_version"))
-	deps.annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:$mixin_extras_version")
 }
 
 @SuppressWarnings("unused") // for subprojects
@@ -57,7 +47,7 @@ def moduleDependencies(Project project, List<String> depNames) {
 	}
 	project.dependencies {
 		deps.each {
-			api(include(it))
+			api it
 		}
 	}
 
@@ -144,6 +134,9 @@ allprojects {
 
 	java {
 		withSourcesJar()
+
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
 	}
 
 	loom {
@@ -184,7 +177,7 @@ allprojects {
 
 	[jar, sourcesJar].each {
 		it.from(rootProject.file("LICENSE")) {
-			rename { "${it}-${project.archivesBaseName}"}
+			rename { "${it}-${project.base.archivesName.get()}"}
 		}
 	}
 
@@ -194,7 +187,7 @@ allprojects {
 				loader_version: loader_version,
 				fabric_version: fabric_version,
 				minecraft_version: minecraft_version,
-				java_version: sourceCompatibility,
+				java_version: java.sourceCompatibility,
 
 				// property replacement is a bit too eager
 				class_5124: "\$class_5124",
@@ -208,19 +201,13 @@ allprojects {
 		}
 	}
 
-	machete {
-		if (buildNumber == null) {
-			enabled = false
-		}
-	}
-
 	tasks.withType(AbstractArchiveTask).configureEach {
 		reproducibleFileOrder = true
 	}
 
 	jar {
 		from("LICENSE") {
-			rename { "${it}_${project.archivesBaseName}" }
+			rename { "${it}_${project.base.archivesName.get()}" }
 		}
 	}
 
@@ -241,8 +228,8 @@ allprojects {
 dependencies {
 	afterEvaluate {
 		// fat jar depends on and includes all modules
-		for (Project module : subprojects) {
-			api(include(module))
+        subprojects.each {
+            api project(path: "${it.path}", configuration: "namedElements")
 		}
 	}
 }
@@ -257,7 +244,7 @@ subprojects.forEach {
 		outputs.upToDateWhen { false }
 	}
 	// archive base name is porting_lib_<subproject name>
-	it.extensions.findByType(BasePluginExtension.class).archivesName = "${archivesBaseName}_${it.name}"
+	it.extensions.findByType(BasePluginExtension.class).archivesName = "${base.archivesName.get()}_${it.name}"
 }
 
 sourceSets {

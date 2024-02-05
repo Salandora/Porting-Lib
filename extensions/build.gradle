@@ -1,5 +1,3 @@
-mixinExtras(dependencies)
-
 fabricModule(project, ["fabric-transfer-api-v1"])
 
 processResources {
