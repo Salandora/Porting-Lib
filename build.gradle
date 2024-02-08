@@ -47,7 +47,7 @@ def moduleDependencies(Project project, List<String> depNames) {
 	}
 	project.dependencies {
 		deps.each {
-			api it
+			api(include(it))
 		}
 	}
 
@@ -120,7 +120,6 @@ allprojects {
 		maven { url = "https://mvn.devos.one/snapshots/" }
 		maven { url = "https://maven.wispforest.io" }
 		maven { url = "https://cursemaven.com" }
-		maven { url "https://maven.vram.io" }
 		maven {
 			url = "https://jitpack.io"
 		}
@@ -226,12 +225,12 @@ allprojects {
 }
 
 dependencies {
-	afterEvaluate {
-		// fat jar depends on and includes all modules
-        subprojects.each {
-            api project(path: "${it.path}", configuration: "namedElements")
-		}
-	}
+    afterEvaluate {
+        // fat jar depends on and includes all modules
+        for (Project module : subprojects) {
+            api(include(module))
+        }
+    }
 }
 
 subprojects.forEach {
@@ -244,7 +243,7 @@ subprojects.forEach {
 		outputs.upToDateWhen { false }
 	}
 	// archive base name is porting_lib_<subproject name>
-	it.extensions.findByType(BasePluginExtension.class).archivesName = "${base.archivesName.get()}_${it.name}"
+	it.extensions.findByType(BasePluginExtension.class).archivesName = "${project.base.archivesName.get()}_${it.name}"
 }
 
 sourceSets {
@@ -304,11 +303,14 @@ subprojects {
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
+            afterEvaluate {
+                artifactId = project.base.archivesName.get()
+            }
 			artifact(remapJar) {
 				builtBy(remapJar)
 			}
 
-			artifact(sourcesJar) {
+			artifact(remapSourcesJar) {
 				builtBy remapSourcesJar
 			}
 
