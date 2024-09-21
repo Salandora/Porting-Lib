@@ -11,22 +11,24 @@ targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = "porting_lib"
 
+/*
 Provider<String> branchProvider = providers.exec {
 	it.setWorkingDir(project.projectDir)
 	it.setCommandLine("git", "branch", "--show-current")
 }.standardOutput.asText.map {
 	it.contains("not a git repository") ? "unknown" : it.trim()
 }
+*/
 
 String versionNumber = providers.provider {
 	String version = mod_version // 2.3.1
 	if (System.getenv("SNAPSHOT") == "true") {
 		version += "-beta." + System.getenv("GITHUB_RUN_NUMBER") // 2.3.1-beta.1000
 	}
-	return version + "+" + branchProvider.get() // 2.3.1-beta.1000+1.20.1
+	return version + "+$minecraft_version"// + branchProvider.get() // 2.3.1-beta.1000+1.20.1
 }.get()
 
-print("Version number: " + versionNumber)
+print("Version number: $versionNumber\n")
 
 dependencies {
 	subprojects.forEach {
