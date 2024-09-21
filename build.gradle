@@ -1,5 +1,5 @@
-import io.github.fabricators_of_create.porting_lib_build.tasks.FmjExpander
 import io.github.fabricators_of_create.porting_lib_build.PortingLibBuildPlugin
+import io.github.fabricators_of_create.porting_lib_build.tasks.FmjExpander
 
 plugins {
 	id "fabric-loom"
@@ -25,6 +25,8 @@ String versionNumber = providers.provider {
 	}
 	return version + "+" + branchProvider.get() // 2.3.1-beta.1000+1.20.1
 }.get()
+
+print("Version number: " + versionNumber)
 
 dependencies {
 	subprojects.forEach {
