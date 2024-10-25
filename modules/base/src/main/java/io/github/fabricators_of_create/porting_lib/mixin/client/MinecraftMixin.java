@@ -70,7 +70,8 @@ public abstract class MinecraftMixin {
 			at = @At(
 					value = "FIELD",
 					target = "Lnet/minecraft/client/Minecraft;particleEngine:Lnet/minecraft/client/particle/ParticleEngine;",
-					shift = Shift.AFTER
+					shift = Shift.AFTER,
+					ordinal = 0
 			)
 	)
 	public void port_lib$registerParticleManagers(GameConfig gameConfiguration, CallbackInfo ci) {
@@ -128,12 +129,12 @@ public abstract class MinecraftMixin {
 		return original.call(gameMode, posBlock, directionFacing); // continue to continueDestroyBlock
 	}
 
-	@Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;render(Lnet/minecraft/client/DeltaTracker;Z)V", shift = Shift.BEFORE))
+	@Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;render(Lnet/minecraft/client/DeltaTracker;Z)V"))
 	private void renderTickStart(CallbackInfo ci) {
 		RenderFrameEvent.PRE.invoker().onRenderFrame(this.timer);
 	}
 
-	@Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;render(Lnet/minecraft/client/DeltaTracker;Z)V"))
+	@Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;render(Lnet/minecraft/client/DeltaTracker;Z)V", shift = Shift.AFTER))
 	private void renderTickEnd(CallbackInfo ci) {
 		RenderFrameEvent.POST.invoker().onRenderFrame(this.timer);
 	}
