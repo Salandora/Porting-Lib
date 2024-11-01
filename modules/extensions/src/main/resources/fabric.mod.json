@@ -34,10 +34,7 @@
       "net/minecraft/class_2526": ["io/github/fabricators_of_create/porting_lib/extensions/extensions/IShearable"],
       "net/minecraft/class_2541": ["io/github/fabricators_of_create/porting_lib/extensions/extensions/IShearable"],
       "net/minecraft/class_2560": ["io/github/fabricators_of_create/porting_lib/extensions/extensions/IShearable"],
-      "net/minecraft/class_2586": [
-        "io/github/fabricators_of_create/porting_lib/extensions/extensions/BlockEntityExtensions",
-        "io/github/fabricators_of_create/porting_lib/core/util/INBTSerializable<Lnet/minecraft/nbt/CompoundTag;>"
-      ],
+      "net/minecraft/class_2586": ["io/github/fabricators_of_create/porting_lib/extensions/extensions/BlockEntityExtensions"],
       "net/minecraft/class_2680": ["io/github/fabricators_of_create/porting_lib/extensions/extensions/BlockStateExtensions"],
       "net/minecraft/class_2960": ["io/github/fabricators_of_create/porting_lib/extensions/extensions/ResourceLocationExtensions"],
       "net/minecraft/class_3491": ["io/github/fabricators_of_create/porting_lib/extensions/extensions/StructureProcessorExtensions"],
