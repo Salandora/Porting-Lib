@@ -26,16 +26,16 @@ public abstract class PortingLibExtension {
 		Project project = this.getProject();
 		DependencyHandler dependencies = project.getDependencies();
 
-		Dependency dependency = dependencies.project(Map.of(
+		Dependency apiDependency = dependencies.project(Map.of(
 				"path", ":" + name,
 				"configuration", "namedElements"
 		));
-		dependencies.add("api", dependency);
-		dependencies.add("include", dependency);
+		dependencies.add("api", apiDependency);
+		dependencies.add("include", dependencies.project(Map.of("path", ":" + name)));
 
 		if (name.equals("mixin_extensions")) {
 			// special case, also an AP
-			dependencies.add("annotationProcessor", dependency);
+			dependencies.add("annotationProcessor", apiDependency);
 		}
 
 		LoomGradleExtensionAPI loom = project.getExtensions().getByType(LoomGradleExtensionAPI.class);
