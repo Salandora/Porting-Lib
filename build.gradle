@@ -14,9 +14,8 @@ archivesBaseName = "porting_lib"
 Provider<String> branchProvider = providers.exec {
 	it.setCommandLine("git", "branch", "--show-current")
 }.standardOutput.asText.map {
-	it.contains("not a git repository") ? "unknown" : it.trim()
+	it.contains("not a git repository") ? "unknown" : it.replace("soph/", "").trim()
 }
-
 
 String versionNumber = providers.provider {
 	String version = mod_version // 2.3.1
