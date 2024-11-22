@@ -7,10 +7,10 @@ jobs:
       matrix:
         java: [ 17 ]
     runs-on: ubuntu-latest
-    env:
-      SNAPSHOT: 'true'
-      MAVEN_USER: ${{ secrets.MAVEN_USER }}
-      MAVEN_PASS: ${{ secrets.MAVEN_PASS }}
+#    env:
+#      SNAPSHOT: 'true'
+#      MAVEN_USER: ${{ secrets.MAVEN_USER }}
+#      MAVEN_PASS: ${{ secrets.MAVEN_PASS }}
     steps:
 
       - name: checkout repository
@@ -26,7 +26,19 @@ jobs:
           java-version: 17
           cache: gradle
 
-      - name: publish
+      - name: Loom Cache
+        uses: actions/cache@v4
+        with:
+          path: "**/.gradle/loom-cache"
+          key: "${{ runner.os }}-gradle-${{ hashFiles('**/libs.versions.*', '**/*.gradle*', '**/gradle-wrapper.properties') }}"
+          restore-keys: "${{ runner.os }}-gradle-"
+
+      - name: Validate Gradle Wrapper Integrity
+        uses: gradle/wrapper-validation-action@v2
+
+      - name: Publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # build task creates artifacts for capture and upload, then publish publishes to maven
         run: ./gradlew build publish
 
