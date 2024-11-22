@@ -3,6 +3,7 @@ package io.github.fabricators_of_create.porting_lib.models;
 import java.util.List;
 
 import io.github.fabricators_of_create.porting_lib.models.geometry.EmptyModel;
+import io.github.fabricators_of_create.porting_lib.render_types.RenderTypeGroup;
 import io.github.fabricators_of_create.porting_lib.textures.UnitTextureAtlasSprite;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;

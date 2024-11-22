@@ -3,7 +3,7 @@ package io.github.fabricators_of_create.porting_lib.models.geometry;
 import java.util.function.Function;
 
 import io.github.fabricators_of_create.porting_lib.models.IModelBuilder;
-import io.github.fabricators_of_create.porting_lib.models.RenderTypeGroup;
+import io.github.fabricators_of_create.porting_lib.render_types.RenderTypeGroup;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -22,9 +22,9 @@ public abstract class SimpleUnbakedGeometry<T extends SimpleUnbakedGeometry<T>> 
 		TextureAtlasSprite particle = spriteGetter.apply(context.getMaterial("particle"));
 
 		var renderTypeHint = context.getRenderTypeHint();
-//		var renderTypes = renderTypeHint != null ? context.getRenderType(renderTypeHint) : RenderTypeGroup.EMPTY;
+		var renderTypes = renderTypeHint != null ? context.getRenderType(renderTypeHint) : RenderTypeGroup.EMPTY;
 		IModelBuilder<?> builder = IModelBuilder.of(context.useAmbientOcclusion(), context.useBlockLight(), context.isGui3d(),
-				context.getTransforms(), overrides, particle, /*renderTypes*/RenderTypeGroup.EMPTY);
+				context.getTransforms(), overrides, particle, renderTypes);
 
 		addQuads(context, builder, baker, spriteGetter, modelState);
 

@@ -9,6 +9,8 @@ import com.google.gson.JsonParseException;
 import io.github.fabricators_of_create.porting_lib.models.geometry.IGeometryBakingContext;
 import io.github.fabricators_of_create.porting_lib.models.geometry.IGeometryLoader;
 import io.github.fabricators_of_create.porting_lib.models.geometry.IUnbakedGeometry;
+import io.github.fabricators_of_create.porting_lib.render_types.PortingLibRenderTypes;
+import io.github.fabricators_of_create.porting_lib.render_types.RenderTypeGroup;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -59,14 +61,14 @@ public class ItemLayerModel implements IUnbakedGeometry<ItemLayerModel> {
 		if (!rootTransform.isIdentity())
 			modelState = UnbakedGeometryHelper.composeRootTransformIntoModelState(modelState, rootTransform);
 
-		var normalRenderTypes = new RenderTypeGroup(RenderType.translucent(), RenderType.translucent()/*NeoForgeRenderTypes.ITEM_UNSORTED_TRANSLUCENT.get() TODO: PORT */);
+		var normalRenderTypes = new RenderTypeGroup(RenderType.translucent(), PortingLibRenderTypes.ITEM_UNSORTED_TRANSLUCENT.get());
 		CompositeModel.Baked.Builder builder = CompositeModel.Baked.builder(context, particle, overrides, context.getTransforms());
 		for (int i = 0; i < textures.size(); i++) {
 			TextureAtlasSprite sprite = spriteGetter.apply(textures.get(i));
 			var unbaked = UnbakedGeometryHelper.createUnbakedItemElements(i, sprite, this.layerData.get(i));
 			var quads = UnbakedGeometryHelper.bakeElements(unbaked, $ -> sprite, modelState);
 			var renderTypeName = renderTypeNames.get(i);
-			RenderTypeGroup renderTypes = /*renderTypeName != null ? context.getRenderType(renderTypeName) :*/ null;
+			RenderTypeGroup renderTypes = renderTypeName != null ? context.getRenderType(renderTypeName) : null;
 			builder.addQuads(renderTypes != null ? renderTypes : normalRenderTypes, quads);
 		}
 

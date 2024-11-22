@@ -1,4 +1,4 @@
-package io.github.fabricators_of_create.porting_lib.models;
+package io.github.fabricators_of_create.porting_lib.render_types;
 
 import net.minecraft.client.renderer.RenderType;
 

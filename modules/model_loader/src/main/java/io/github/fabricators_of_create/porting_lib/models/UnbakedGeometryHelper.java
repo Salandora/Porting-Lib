@@ -236,6 +236,22 @@ public class UnbakedGeometryHelper {
 	}
 
 	/**
+	 * Create an {@link IQuadTransformer} to apply a {@link Transformation} that undoes the {@link ModelState}
+	 * transform (blockstate transform), applies the given root transform and then re-applies the
+	 * blockstate transform.
+	 *
+	 * @return an {@code IQuadTransformer} that applies the root transform to a baked quad that already has the
+	 *         transformation of the given {@code ModelState} applied to it
+	 */
+	public static IQuadTransformer applyRootTransform(ModelState modelState, Transformation rootTransform) {
+		// Move the origin of the ModelState transform and its inverse from the negative corner to the block center
+		// to replicate the way the ModelState transform is applied in the FaceBakery by moving the vertices such that
+		// the negative corner acts as the block center
+		Transformation transform = modelState.getRotation().applyOrigin(new Vector3f(.5F, .5F, .5F));
+		return QuadTransformers.applying(transform.compose(rootTransform).compose(transform.inverse()));
+	}
+
+	/**
 	 * Create an {@link RenderContext.QuadTransform} to apply a {@link Transformation} that undoes the {@link ModelState}
 	 * transform (blockstate transform), applies the given root transform and then re-applies the
 	 * blockstate transform.
@@ -243,12 +259,12 @@ public class UnbakedGeometryHelper {
 	 * @return an {@code IQuadTransformer} that applies the root transform to a baked quad that already has the
 	 *         transformation of the given {@code ModelState} applied to it
 	 */
-	public static RenderContext.QuadTransform applyRootTransform(ModelState modelState, Transformation rootTransform) {
+	public static RenderContext.QuadTransform applyFabricRootTransform(ModelState modelState, Transformation rootTransform) {
 		// Move the origin of the ModelState transform and its inverse from the negative corner to the block center
 		// to replicate the way the ModelState transform is applied in the FaceBakery by moving the vertices such that
 		// the negative corner acts as the block center
 		Transformation transform = modelState.getRotation().applyOrigin(new Vector3f(.5F, .5F, .5F));
-		return QuadTransformers.applying(transform.compose(rootTransform).compose(transform.inverse()));
+		return FabricQuadTransformers.applying(transform.compose(rootTransform).compose(transform.inverse()));
 	}
 
 	/**

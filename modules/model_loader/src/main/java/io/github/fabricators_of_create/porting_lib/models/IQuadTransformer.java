@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 /**
  * Transformer for {@link BakedQuad baked quads}.
  *
- * @see QuadTransformers
+ * @see FabricQuadTransformers
  */
 public interface IQuadTransformer {
 	int STRIDE = DefaultVertexFormat.BLOCK.getVertexSize() / 4;

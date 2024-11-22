@@ -42,10 +42,12 @@ Just choose a version and use its version number.
 | `level_events`           | Provides common level events for mods.                                               |
 | `loot`                   | A small library to modify mob loot                                                   |
 | `mixin_extensions`       | More features for Mixins                                                             |
+| `model_data`             | Addon to model api to make building model data easier.                               |
 | `model_loader`           | Base loader for custom model types                                                   |
 | `models`                 | Model implementations, ModelData, RenderTypes                                        |
 | `obj_loader`             | Loading .obj models                                                                  |
 | `recipe_book_categories` | Allows mods to add additional recipe book categories                                 |
+| `render_types`           | Custom render types for models and entities                                          |
 | `tags`                   | Forge tags                                                                           |
 | `transfer`               | Storage implementations, client-side lookup, FluidStack, assorted transfer utilities |
 

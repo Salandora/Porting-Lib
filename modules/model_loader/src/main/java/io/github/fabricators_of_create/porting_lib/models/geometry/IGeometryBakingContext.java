@@ -1,6 +1,9 @@
 package io.github.fabricators_of_create.porting_lib.models.geometry;
 
 import com.mojang.math.Transformation;
+
+import io.github.fabricators_of_create.porting_lib.render_types.NamedRenderTypeManager;
+import io.github.fabricators_of_create.porting_lib.render_types.RenderTypeGroup;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
@@ -76,10 +79,10 @@ public interface IGeometryBakingContext {
 	 */
 	boolean isComponentVisible(String component, boolean fallback);
 
-//	/**
-//	 * {@return a {@link RenderTypeGroup} with the given name, or the empty group if not found.}
-//	 */
-//	default RenderTypeGroup getRenderType(ResourceLocation name) {
-//		return NamedRenderTypeManager.get(name);
-//	}
+	/**
+	 * {@return a {@link RenderTypeGroup} with the given name, or the empty group if not found.}
+	 */
+	default RenderTypeGroup getRenderType(ResourceLocation name) {
+		return NamedRenderTypeManager.get(name);
+	}
 }
