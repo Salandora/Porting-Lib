@@ -12,7 +12,6 @@ targetCompatibility = JavaVersion.VERSION_17
 archivesBaseName = "porting_lib"
 
 Provider<String> branchProvider = providers.exec {
-	it.setWorkingDir(project.projectDir)
 	it.setCommandLine("git", "branch", "--show-current")
 }.standardOutput.asText.map {
 	it.contains("not a git repository") ? "unknown" : it.trim()
@@ -38,7 +37,7 @@ processResources {
 }
 
 // resets the changelog and bumps the version after an automated release.
-tasks.register("postRelease") {
+/*tasks.register("postRelease") {
 	String nextVersion = project.hasProperty("nextVersion") ? project.property("nextVersion") : null
 	File changelog = rootProject.file("CHANGELOG.txt")
 	File props = rootProject.file("gradle.properties")
@@ -55,7 +54,7 @@ tasks.register("postRelease") {
 		properties = properties.replace(currentVersion, nextVersion)
 		props.setText(properties)
 	}
-}
+}*/
 
 allprojects {
 	if (name == "buildSrc") return
@@ -204,6 +203,25 @@ subprojects {
 	publishing {
 		repositories {
 			maven {
+				name = "GitHubPackages"
+				url = uri("${github_package_url}")
+				credentials {
+					username = System.getenv("GITHUB_ACTOR")
+					password = System.getenv("GITHUB_TOKEN")
+				}
+			}
+		}
+
+		publications {
+			register("mavenJava", MavenPublication) {
+				from((SoftwareComponent) components["java"])
+			}
+		}
+	}
+
+	/*publishing {
+		repositories {
+			maven {
 				name = "devOS"
 				String mavenType = System.getenv("RELEASE") == "true" ? "releases" : "snapshots"
 				url = "https://mvn.devos.one/$mavenType/"
@@ -222,5 +240,5 @@ subprojects {
 				from((SoftwareComponent) components["java"])
 			}
 		}
-	}
+	}*/
 }
