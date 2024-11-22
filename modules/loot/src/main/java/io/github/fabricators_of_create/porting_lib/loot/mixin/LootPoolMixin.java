@@ -10,10 +10,7 @@ import io.github.fabricators_of_create.porting_lib.loot.extensions.LootPoolBuild
 import io.github.fabricators_of_create.porting_lib.loot.extensions.LootPoolExtensions;
 import net.minecraft.world.level.storage.loot.LootPool;
 
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -36,7 +33,7 @@ public class LootPoolMixin implements LootPoolExtensions {
 
 	@ModifyExpressionValue(
 			method = "<clinit>",
-			at = @At(value = "INVOKE", target = "Lcom/mojang/serialization/codecs/RecordCodecBuilder;create(Ljava/util/function/Function;)Lcom/mojang/serialization/Codec;")
+			at = @At(value = "INVOKE", target = "Lcom/mojang/serialization/codecs/RecordCodecBuilder;create(Ljava/util/function/Function;)Lcom/mojang/serialization/Codec;", remap = false)
 	)
 	private static Codec<LootPool> modifyCodec(Codec<LootPool> original) {
 		// TODO: test this

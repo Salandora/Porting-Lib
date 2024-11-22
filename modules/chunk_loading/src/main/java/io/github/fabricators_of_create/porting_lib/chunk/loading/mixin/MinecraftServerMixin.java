@@ -13,7 +13,7 @@ import net.minecraft.world.level.ForcedChunksSavedData;
 
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
-	@ModifyExpressionValue(method = "prepareLevels", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/longs/LongIterator;hasNext()Z"))
+	@ModifyExpressionValue(method = "prepareLevels", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/longs/LongIterator;hasNext()Z", remap = false))
 	private boolean reinstatePersistentChunks(boolean original, @Local(index = 8) ServerLevel serverLevel2, @Local(index = 9) ForcedChunksSavedData forcedChunksSavedData) {
 		if (!original) // a bit of a hack honestly but avoids us having to make a custom Injection Point
 			ForcedChunkManager.reinstatePersistentChunks(serverLevel2, forcedChunksSavedData);

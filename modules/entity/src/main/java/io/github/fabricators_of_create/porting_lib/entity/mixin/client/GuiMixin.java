@@ -12,7 +12,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 
 @Mixin(Gui.class)
 public class GuiMixin {
-	@ModifyArg(method = "renderEffects", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Ordering;sortedCopy(Ljava/lang/Iterable;)Ljava/util/List;"))
+	@ModifyArg(method = "renderEffects", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Ordering;sortedCopy(Ljava/lang/Iterable;)Ljava/util/List;", remap = false))
 	private <E extends MobEffectInstance> Iterable<E> shouldRenderEffect(Iterable<E> elements) {
 		Collection<E> effectInstances = (Collection<E>) elements;
 

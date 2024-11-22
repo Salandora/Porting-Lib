@@ -2,7 +2,6 @@ package io.github.fabricators_of_create.porting_lib.entity.mixin.common;
 
 import io.github.fabricators_of_create.porting_lib.entity.EntityHooks;
 import io.github.fabricators_of_create.porting_lib.entity.events.OnDatapackSyncCallback;
-import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerEvent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.server.level.ServerPlayer;
@@ -53,7 +52,7 @@ public abstract class PlayerListMixin {
 		EntityHooks.firePlayerLoggedOut(serverPlayer);
 	}
 
-	@Inject(method = "load", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;debug(Ljava/lang/String;)V", shift = At.Shift.AFTER))
+	@Inject(method = "load", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;debug(Ljava/lang/String;)V", shift = At.Shift.AFTER, remap = false))
 	private void onPlayerLoad(ServerPlayer player, CallbackInfoReturnable<Optional<CompoundTag>> cir) {
 		EntityHooks.firePlayerLoadingEvent(player, this.playerIo, player.getUUID().toString());
 	}
