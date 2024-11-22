@@ -15,6 +15,7 @@ import io.github.fabricators_of_create.porting_lib.models.geometry.IGeometryLoad
 import io.github.fabricators_of_create.porting_lib.models.geometry.IUnbakedGeometry;
 import io.github.fabricators_of_create.porting_lib.models.geometry.SimpleModelState;
 import io.github.fabricators_of_create.porting_lib.models.geometry.StandaloneGeometryBakingContext;
+import io.github.fabricators_of_create.porting_lib.render_types.RenderTypeGroup;
 import io.github.fabricators_of_create.porting_lib.util.FluidUtil;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
@@ -78,7 +79,7 @@ public class DynamicFluidContainerModel implements IUnbakedGeometry<DynamicFluid
 
 	public static RenderTypeGroup getLayerRenderTypes(boolean unlit) {
 		// Must be solid or else water texture will break the rendering
-		return new RenderTypeGroup(RenderType.translucent(), RenderType.solid()); // unlit ? NeoForgeRenderTypes.ITEM_UNSORTED_UNLIT_TRANSLUCENT.get() : NeoForgeRenderTypes.ITEM_UNSORTED_TRANSLUCENT.get());
+		return new RenderTypeGroup(RenderType.translucent(), RenderType.solid()); // unlit ? PortingLibRenderTypes.ITEM_UNSORTED_UNLIT_TRANSLUCENT.get() : PortingLibRenderTypes.ITEM_UNSORTED_TRANSLUCENT.get());
 	}
 
 	/**
